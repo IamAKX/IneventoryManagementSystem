@@ -1,3 +1,2 @@
 # Inventory Management System
-``` For managing stock
-```
+ For managing stock
