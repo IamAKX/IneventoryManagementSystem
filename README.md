@@ -1,0 +1,2 @@
+# IneventoryManagementSystem
+For managing stock
