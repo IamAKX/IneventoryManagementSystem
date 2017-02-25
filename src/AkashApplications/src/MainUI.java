@@ -7,6 +7,9 @@ package AkashApplications.src;
 
 
 import AkashApplications.JsonParser.CustomJsonParser;
+import AkashApplications.networkmanager.ClientAccess;
+import AkashApplications.networkmanager.SaveClient;
+import AkashApplications.networkmanager.SearchProduct;
 import AkashApplications.networkmanager.SendBulkRequest;
 import AkashApplications.networkmanager.SendRequest;
 import AkashApplications.networkmanager.ServerConstants;
@@ -41,11 +44,24 @@ public class MainUI extends javax.swing.JFrame {
         BulkItemTable.getColumnModel().getColumn(6).setMinWidth(0);
         BulkItemTable.getColumnModel().getColumn(6).setPreferredWidth(0);
         
+        ClientTable.getColumnModel().getColumn(5).setMaxWidth(0);
+        ClientTable.getColumnModel().getColumn(5).setMinWidth(0);
+        ClientTable.getColumnModel().getColumn(5).setPreferredWidth(0);
+        
+        FavouriteClientTable.getColumnModel().getColumn(4).setMaxWidth(0);
+        FavouriteClientTable.getColumnModel().getColumn(4).setMinWidth(0);
+        FavouriteClientTable.getColumnModel().getColumn(4).setPreferredWidth(0);
+        
+        FavouriteClientTable.getColumnModel().getColumn(5).setMaxWidth(0);
+        FavouriteClientTable.getColumnModel().getColumn(5).setMinWidth(0);
+        FavouriteClientTable.getColumnModel().getColumn(5).setPreferredWidth(0);
+        
         setTitle(TITLE+" - Stock");
+        
+     
     }
     
     
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -55,6 +71,51 @@ public class MainUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        StockPane = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        productID = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        rackNo = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        subRackNo = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        qty = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        designName = new javax.swing.JTextField();
+        updateCancleBtn = new javax.swing.JButton();
+        editUpdateBtn = new javax.swing.JButton();
+        mainUiProgress = new javax.swing.JProgressBar();
+        mainUiProgressReport = new javax.swing.JLabel();
+        searchBtn = new javax.swing.JButton();
+        jLabel20 = new javax.swing.JLabel();
+        texture = new javax.swing.JTextField();
+        FavouriteClientPanel = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        FavouriteClientTable = new javax.swing.JTable();
+        jLabel26 = new javax.swing.JLabel();
+        FavClientName = new javax.swing.JTextField();
+        jLabel27 = new javax.swing.JLabel();
+        FavClientComapny = new javax.swing.JTextField();
+        FavSearchBtn = new javax.swing.JButton();
+        AddClient = new javax.swing.JPanel();
+        jLabel21 = new javax.swing.JLabel();
+        ClientName = new javax.swing.JTextField();
+        jLabel22 = new javax.swing.JLabel();
+        ClientComapny = new javax.swing.JTextField();
+        jLabel24 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        ClientAddress = new javax.swing.JTextArea();
+        jLabel23 = new javax.swing.JLabel();
+        ClientPhone = new javax.swing.JTextField();
+        ClientAdd = new javax.swing.JButton();
+        ClientDelete = new javax.swing.JButton();
+        ClientFavouriteCheckbox = new javax.swing.JCheckBox();
+        ClientUpdate = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        ClientTable = new javax.swing.JTable();
+        clientViewAll = new javax.swing.JButton();
+        clientSearchBtn = new javax.swing.JButton();
+        ClientID = new javax.swing.JLabel();
         AddSingleItemPane = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         productIDAddSingle = new javax.swing.JTextField();
@@ -103,25 +164,7 @@ public class MainUI extends javax.swing.JFrame {
         StockSummaryTable = new javax.swing.JTable();
         StockSummaryProgress = new javax.swing.JProgressBar();
         StockSummaryProgressReport = new javax.swing.JLabel();
-        StockPane = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        productID = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        rackNo = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        subRackNo = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        qty = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        designName = new javax.swing.JTextField();
-        updateCancleBtn = new javax.swing.JButton();
-        editUpdateBtn = new javax.swing.JButton();
-        mainUiProgress = new javax.swing.JProgressBar();
-        mainUiProgressReport = new javax.swing.JLabel();
-        searchBtn = new javax.swing.JButton();
-        jLabel20 = new javax.swing.JLabel();
-        texture = new javax.swing.JTextField();
-        AddClientPanel = new javax.swing.JPanel();
+        viewAllBtnSSummary = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
@@ -143,6 +186,551 @@ public class MainUI extends javax.swing.JFrame {
         setTitle("Inventory Management");
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel2.setText("Product ID");
+
+        productID.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                productIDInputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+        });
+        productID.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                productIDKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                productIDKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                productIDKeyReleased(evt);
+            }
+        });
+
+        jLabel3.setText("Rack Number");
+        jLabel3.setPreferredSize(new java.awt.Dimension(73, 15));
+
+        rackNo.setEnabled(false);
+        rackNo.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                rackNoInputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+        });
+        rackNo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rackNoActionPerformed(evt);
+            }
+        });
+        rackNo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                rackNoKeyTyped(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                rackNoKeyReleased(evt);
+            }
+        });
+
+        jLabel1.setText("Sub Rack Number");
+
+        subRackNo.setEnabled(false);
+
+        jLabel4.setText("Stock Quantity");
+
+        qty.setEnabled(false);
+
+        jLabel5.setText("Design Name");
+
+        designName.setEnabled(false);
+
+        updateCancleBtn.setText("Cancel");
+        updateCancleBtn.setEnabled(false);
+
+        editUpdateBtn.setText("Edit");
+        editUpdateBtn.setEnabled(false);
+        editUpdateBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editUpdateBtnActionPerformed(evt);
+            }
+        });
+
+        mainUiProgressReport.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
+        mainUiProgressReport.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+
+        searchBtn.setText("Search");
+        searchBtn.setEnabled(false);
+        searchBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchBtnActionPerformed(evt);
+            }
+        });
+
+        jLabel20.setText("Texture");
+        jLabel20.setPreferredSize(new java.awt.Dimension(73, 15));
+
+        texture.setEnabled(false);
+        texture.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textureActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout StockPaneLayout = new javax.swing.GroupLayout(StockPane);
+        StockPane.setLayout(StockPaneLayout);
+        StockPaneLayout.setHorizontalGroup(
+            StockPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(StockPaneLayout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(StockPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(StockPaneLayout.createSequentialGroup()
+                        .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addComponent(texture, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(StockPaneLayout.createSequentialGroup()
+                        .addGroup(StockPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(6, 6, 6)
+                        .addGroup(StockPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(StockPaneLayout.createSequentialGroup()
+                                .addComponent(rackNo, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(subRackNo, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(qty, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(StockPaneLayout.createSequentialGroup()
+                                .addComponent(productID, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(designName)))
+                        .addGap(41, 41, 41))))
+            .addGroup(StockPaneLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(StockPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, StockPaneLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(searchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29)
+                        .addComponent(editUpdateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
+                        .addComponent(updateCancleBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(mainUiProgress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(mainUiProgressReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        StockPaneLayout.setVerticalGroup(
+            StockPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(StockPaneLayout.createSequentialGroup()
+                .addGroup(StockPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(StockPaneLayout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(StockPaneLayout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addGroup(StockPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(productID, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, StockPaneLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(designName, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addGroup(StockPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(StockPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(rackNo, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE))
+                    .addGroup(StockPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(StockPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(subRackNo)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(StockPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(qty, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(18, 18, 18)
+                .addGroup(StockPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(texture, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(116, 116, 116)
+                .addGroup(StockPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(updateCancleBtn)
+                    .addComponent(editUpdateBtn)
+                    .addComponent(searchBtn))
+                .addGap(30, 30, 30)
+                .addComponent(mainUiProgress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(mainUiProgressReport, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        getContentPane().add(StockPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 540));
+
+        FavouriteClientPanel.setPreferredSize(new java.awt.Dimension(810, 540));
+
+        FavouriteClientTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Client Name", "Company", "Contact", "Address", "Favourite", "ID"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        FavouriteClientTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                FavouriteClientTableMouseClicked(evt);
+            }
+        });
+        jScrollPane4.setViewportView(FavouriteClientTable);
+        FavouriteClientTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        if (FavouriteClientTable.getColumnModel().getColumnCount() > 0) {
+            FavouriteClientTable.getColumnModel().getColumn(5).setResizable(false);
+        }
+
+        jLabel26.setText("Name");
+
+        FavClientName.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                FavClientNameInputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+        });
+        FavClientName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                FavClientNameKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                FavClientNameKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                FavClientNameKeyReleased(evt);
+            }
+        });
+
+        jLabel27.setText("Company");
+
+        FavClientComapny.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                FavClientComapnyInputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+        });
+        FavClientComapny.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                FavClientComapnyKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                FavClientComapnyKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                FavClientComapnyKeyReleased(evt);
+            }
+        });
+
+        FavSearchBtn.setText("Search");
+        FavSearchBtn.setEnabled(false);
+        FavSearchBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FavSearchBtnActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout FavouriteClientPanelLayout = new javax.swing.GroupLayout(FavouriteClientPanel);
+        FavouriteClientPanel.setLayout(FavouriteClientPanelLayout);
+        FavouriteClientPanelLayout.setHorizontalGroup(
+            FavouriteClientPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, FavouriteClientPanelLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(FavouriteClientPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(FavouriteClientPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(FavClientName)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(FavClientComapny, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(FavSearchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 770, Short.MAX_VALUE))
+                .addGap(20, 20, 20))
+        );
+        FavouriteClientPanelLayout.setVerticalGroup(
+            FavouriteClientPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(FavouriteClientPanelLayout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addGroup(FavouriteClientPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(FavClientName, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(FavClientComapny, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(FavSearchBtn))
+                .addGap(40, 40, 40)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(24, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(FavouriteClientPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        AddClient.setPreferredSize(new java.awt.Dimension(810, 540));
+
+        jLabel21.setText("Name");
+
+        ClientName.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                ClientNameInputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+        });
+        ClientName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                ClientNameKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                ClientNameKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                ClientNameKeyReleased(evt);
+            }
+        });
+
+        jLabel22.setText("Company");
+
+        ClientComapny.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                ClientComapnyInputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+        });
+        ClientComapny.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                ClientComapnyKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                ClientComapnyKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                ClientComapnyKeyReleased(evt);
+            }
+        });
+
+        jLabel24.setText("Address");
+
+        ClientAddress.setColumns(20);
+        ClientAddress.setRows(5);
+        jScrollPane1.setViewportView(ClientAddress);
+
+        jLabel23.setText("Phone Number");
+
+        ClientPhone.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                ClientPhoneInputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+        });
+        ClientPhone.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                ClientPhoneKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                ClientPhoneKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                ClientPhoneKeyReleased(evt);
+            }
+        });
+
+        ClientAdd.setText("Add");
+        ClientAdd.setEnabled(false);
+        ClientAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ClientAddActionPerformed(evt);
+            }
+        });
+
+        ClientDelete.setText("Delete");
+        ClientDelete.setEnabled(false);
+        ClientDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ClientDeleteActionPerformed(evt);
+            }
+        });
+
+        ClientFavouriteCheckbox.setText("  Mark as favourite");
+
+        ClientUpdate.setText("Update");
+        ClientUpdate.setEnabled(false);
+        ClientUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ClientUpdateActionPerformed(evt);
+            }
+        });
+
+        ClientTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Client Name", "Company", "Contact", "Address", "Favourite", "ID"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        ClientTable.setColumnSelectionAllowed(true);
+        ClientTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ClientTableMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(ClientTable);
+        ClientTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        if (ClientTable.getColumnModel().getColumnCount() > 0) {
+            ClientTable.getColumnModel().getColumn(5).setResizable(false);
+        }
+
+        clientViewAll.setText("View All");
+        clientViewAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clientViewAllActionPerformed(evt);
+            }
+        });
+
+        clientSearchBtn.setText("Search");
+        clientSearchBtn.setEnabled(false);
+        clientSearchBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clientSearchBtnActionPerformed(evt);
+            }
+        });
+        clientSearchBtn.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                clientSearchBtnKeyReleased(evt);
+            }
+        });
+
+        ClientID.setMaximumSize(new java.awt.Dimension(0, 0));
+        ClientID.setMinimumSize(new java.awt.Dimension(0, 0));
+        ClientID.setPreferredSize(new java.awt.Dimension(0, 0));
+
+        javax.swing.GroupLayout AddClientLayout = new javax.swing.GroupLayout(AddClient);
+        AddClient.setLayout(AddClientLayout);
+        AddClientLayout.setHorizontalGroup(
+            AddClientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AddClientLayout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addGroup(AddClientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane3)
+                    .addGroup(AddClientLayout.createSequentialGroup()
+                        .addGroup(AddClientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel24, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(12, 12, 12)
+                        .addGroup(AddClientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(AddClientLayout.createSequentialGroup()
+                                .addComponent(ClientName)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(6, 6, 6)
+                                .addComponent(ClientComapny, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(AddClientLayout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(AddClientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(AddClientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(AddClientLayout.createSequentialGroup()
+                                            .addComponent(jLabel23)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(ClientPhone))
+                                        .addGroup(AddClientLayout.createSequentialGroup()
+                                            .addComponent(ClientFavouriteCheckbox, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(61, 61, 61)
+                                            .addComponent(ClientID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(0, 0, Short.MAX_VALUE)))
+                                    .addGroup(AddClientLayout.createSequentialGroup()
+                                        .addGap(6, 6, 6)
+                                        .addComponent(clientViewAll)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(clientSearchBtn)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(ClientUpdate)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(ClientDelete)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(ClientAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                .addGap(19, 19, 19))
+        );
+        AddClientLayout.setVerticalGroup(
+            AddClientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AddClientLayout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(AddClientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ClientName, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ClientComapny, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(AddClientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(AddClientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(AddClientLayout.createSequentialGroup()
+                            .addGroup(AddClientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(ClientPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addGroup(AddClientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(ClientFavouriteCheckbox)
+                                .addComponent(ClientID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(AddClientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(ClientAdd)
+                                .addComponent(ClientDelete)
+                                .addComponent(ClientUpdate)
+                                .addComponent(clientViewAll)
+                                .addComponent(clientSearchBtn)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        getContentPane().add(AddClient, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         AddSingleItemPane.setPreferredSize(new java.awt.Dimension(810, 540));
 
@@ -516,9 +1104,12 @@ public class MainUI extends javax.swing.JFrame {
 
         jLabel7.setText("Design Name");
 
-        designNameSSummary.setEnabled(false);
-
         searchBtnSSummary.setText("Search");
+        searchBtnSSummary.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchBtnSSummaryActionPerformed(evt);
+            }
+        });
 
         StockSummaryTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -549,6 +1140,13 @@ public class MainUI extends javax.swing.JFrame {
 
         StockSummaryProgressReport.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
 
+        viewAllBtnSSummary.setText("View All");
+        viewAllBtnSSummary.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewAllBtnSSummaryActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout StockSummaryPaneLayout = new javax.swing.GroupLayout(StockSummaryPane);
         StockSummaryPane.setLayout(StockSummaryPaneLayout);
         StockSummaryPaneLayout.setHorizontalGroup(
@@ -557,6 +1155,8 @@ public class MainUI extends javax.swing.JFrame {
                 .addGroup(StockSummaryPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(StockSummaryPaneLayout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(viewAllBtnSSummary, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(39, 39, 39)
                         .addComponent(searchBtnSSummary, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(StockSummaryPaneLayout.createSequentialGroup()
                         .addGap(24, 24, 24)
@@ -571,9 +1171,9 @@ public class MainUI extends javax.swing.JFrame {
             .addGroup(StockSummaryPaneLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(StockSummaryPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 775, Short.MAX_VALUE)
-                    .addComponent(StockSummaryProgress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(StockSummaryProgressReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(StockSummaryProgress, javax.swing.GroupLayout.DEFAULT_SIZE, 775, Short.MAX_VALUE)
+                    .addComponent(StockSummaryProgressReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 763, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         StockSummaryPaneLayout.setVerticalGroup(
@@ -590,7 +1190,9 @@ public class MainUI extends javax.swing.JFrame {
                             .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(designNameSSummary, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(searchBtnSSummary)
+                .addGroup(StockSummaryPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(searchBtnSSummary)
+                    .addComponent(viewAllBtnSSummary))
                 .addGap(33, 33, 33)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -601,187 +1203,6 @@ public class MainUI extends javax.swing.JFrame {
         );
 
         getContentPane().add(StockSummaryPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 810, 540));
-
-        jLabel2.setText("Product ID");
-
-        productID.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-                productIDInputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
-        });
-        productID.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                productIDKeyTyped(evt);
-            }
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                productIDKeyPressed(evt);
-            }
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                productIDKeyReleased(evt);
-            }
-        });
-
-        jLabel3.setText("Rack Number");
-        jLabel3.setPreferredSize(new java.awt.Dimension(73, 15));
-
-        rackNo.setEnabled(false);
-        rackNo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rackNoActionPerformed(evt);
-            }
-        });
-
-        jLabel1.setText("Sub Rack Number");
-
-        subRackNo.setEnabled(false);
-
-        jLabel4.setText("Stock Quantity");
-
-        qty.setEnabled(false);
-
-        jLabel5.setText("Design Name");
-
-        designName.setEnabled(false);
-
-        updateCancleBtn.setText("Cancel");
-        updateCancleBtn.setEnabled(false);
-
-        editUpdateBtn.setText("Edit");
-        editUpdateBtn.setEnabled(false);
-        editUpdateBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editUpdateBtnActionPerformed(evt);
-            }
-        });
-
-        mainUiProgressReport.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
-        mainUiProgressReport.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-
-        searchBtn.setText("Search");
-        searchBtn.setEnabled(false);
-
-        jLabel20.setText("Texture");
-        jLabel20.setPreferredSize(new java.awt.Dimension(73, 15));
-
-        texture.setEnabled(false);
-        texture.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textureActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout StockPaneLayout = new javax.swing.GroupLayout(StockPane);
-        StockPane.setLayout(StockPaneLayout);
-        StockPaneLayout.setHorizontalGroup(
-            StockPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(StockPaneLayout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addGroup(StockPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(StockPaneLayout.createSequentialGroup()
-                        .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(6, 6, 6)
-                        .addComponent(texture, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(StockPaneLayout.createSequentialGroup()
-                        .addGroup(StockPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(6, 6, 6)
-                        .addGroup(StockPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(StockPaneLayout.createSequentialGroup()
-                                .addComponent(rackNo, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(subRackNo, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(qty, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(StockPaneLayout.createSequentialGroup()
-                                .addComponent(productID, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(designName)))
-                        .addGap(41, 41, 41))))
-            .addGroup(StockPaneLayout.createSequentialGroup()
-                .addGroup(StockPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, StockPaneLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(searchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29)
-                        .addComponent(editUpdateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27)
-                        .addComponent(updateCancleBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(StockPaneLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(mainUiProgress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(StockPaneLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(mainUiProgressReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        StockPaneLayout.setVerticalGroup(
-            StockPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(StockPaneLayout.createSequentialGroup()
-                .addGroup(StockPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(StockPaneLayout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(StockPaneLayout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addGroup(StockPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(productID, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, StockPaneLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(designName, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addGroup(StockPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(StockPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(rackNo, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE))
-                    .addGroup(StockPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(StockPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(subRackNo)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(StockPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(qty, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(18, 18, 18)
-                .addGroup(StockPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(texture, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(116, 116, 116)
-                .addGroup(StockPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(updateCancleBtn)
-                    .addComponent(editUpdateBtn)
-                    .addComponent(searchBtn))
-                .addGap(30, 30, 30)
-                .addComponent(mainUiProgress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(mainUiProgressReport, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-
-        getContentPane().add(StockPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
-
-        AddClientPanel.setPreferredSize(new java.awt.Dimension(810, 540));
-
-        javax.swing.GroupLayout AddClientPanelLayout = new javax.swing.GroupLayout(AddClientPanel);
-        AddClientPanel.setLayout(AddClientPanelLayout);
-        AddClientPanelLayout.setHorizontalGroup(
-            AddClientPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 810, Short.MAX_VALUE)
-        );
-        AddClientPanelLayout.setVerticalGroup(
-            AddClientPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 540, Short.MAX_VALUE)
-        );
-
-        getContentPane().add(AddClientPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         jMenu1.setText("File");
 
@@ -856,11 +1277,21 @@ public class MainUI extends javax.swing.JFrame {
         jMenu3.setText("Client");
 
         jMenuItem9.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem9.setText("Add Client");
+        jMenuItem9.setText("Client Record");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem9);
 
         jMenuItem10.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem10.setText("Favourite Client");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem10);
 
         jMenuBar1.add(jMenu3);
@@ -888,7 +1319,10 @@ public class MainUI extends javax.swing.JFrame {
     private void productIDKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_productIDKeyPressed
         // TODO add your handling code here:
         if(evt.getKeyCode() == 10)
+        {
             editUpdateBtn.setEnabled(true);
+            fetchSingleResult();
+        }
         else
             editUpdateBtn.setEnabled(false);
     }//GEN-LAST:event_productIDKeyPressed
@@ -900,7 +1334,7 @@ public class MainUI extends javax.swing.JFrame {
 
     private void productIDKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_productIDKeyReleased
         // TODO add your handling code here:
-        if(productID.getText().length() == 0)
+        if(productID.getText().trim().length() == 0)
             searchBtn.setEnabled(false);
         else
             searchBtn.setEnabled(true);
@@ -1000,12 +1434,36 @@ public class MainUI extends javax.swing.JFrame {
         {
             try {
                 
-                designName.setEnabled(false);
-                rackNo.setEnabled(false);
-                subRackNo.setEnabled(false);
-                texture.setEnabled(false);
-                qty.setEditable(false);
-                editUpdateBtn.setText("Edit");
+                HashMap<String,String> map = new HashMap<String,String>();
+                map.put("pid",productID.getText());
+                map.put("design",designName.getText());
+                map.put("rack",rackNo.getText());
+                map.put("subrack",subRackNo.getText());
+                map.put("texture",texture.getText());
+                map.put("qty",qty.getText());
+                
+                String s = new SendRequest(mainUiProgressReport, mainUiProgress, map, ServerConstants.UPDATE_PRODUCT).serverResponse();
+                System.err.println(s);
+                CustomJsonParser parser = new CustomJsonParser(s);
+                if(parser.getStatus())
+                {
+                    designName.setEnabled(false);
+                    rackNo.setEnabled(false);
+                    subRackNo.setEnabled(false);
+                    texture.setEnabled(false);
+                    qty.setEditable(false);
+                    editUpdateBtn.setText("Edit");
+                    mainUiProgress.setValue(0);
+                    mainUiProgressReport.setText(parser.getReason());
+                    
+                    designName.setText("");
+                    fetchSingleResult();
+                }
+                else
+                {
+                    mainUiProgress.setValue(0);
+                    mainUiProgressReport.setText(parser.getReason());
+                }
             } catch (Exception ex) {
                 Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -1083,6 +1541,7 @@ public class MainUI extends javax.swing.JFrame {
             map.put("qty",qty);
             map.put("barcode",GenerateBarcode.convertToBase64("Barcodes" + File.separator + pId+".jpg"));
             String s = new SendRequest(AddSingleProgressReport,AddSingleProgress,map,ServerConstants.ADD_PRODUCT).serverResponse();
+            System.err.println(s);
             CustomJsonParser parser = new CustomJsonParser(s);
             if(parser.getStatus())
             {
@@ -1237,6 +1696,415 @@ public class MainUI extends javax.swing.JFrame {
     progressReportAddBulk.setText("All products were saved successfully...");
     }//GEN-LAST:event_saveAllBtnAddBulkActionPerformed
 
+    private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
+        fetchSingleResult();
+    }//GEN-LAST:event_searchBtnActionPerformed
+
+    private void rackNoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_rackNoKeyTyped
+        // TODO add your handling code here:
+       
+    }//GEN-LAST:event_rackNoKeyTyped
+
+    private void rackNoInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_rackNoInputMethodTextChanged
+        // TODO add your handling code here:
+       
+    }//GEN-LAST:event_rackNoInputMethodTextChanged
+
+    private void searchBtnSSummaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnSSummaryActionPerformed
+        String pID = productIDSSummary.getText().trim().equals("") ? " " : productIDSSummary.getText();
+        String design = designNameSSummary.getText().trim().equals("") ? " " : designNameSSummary.getText();
+        DefaultTableModel tableModel = (DefaultTableModel) StockSummaryTable.getModel();
+        ArrayList<ProductModel> list = new ArrayList<>();
+        int i = 0;
+        while(tableModel.getRowCount() > 0)
+        {
+            for(i = 0; i < tableModel.getRowCount(); i++)
+            {
+                tableModel.removeRow(i);
+            }
+        }
+        
+        HashMap<String,String> map = new HashMap<>();
+        map.put("pid", pID);
+        map.put("design", design);
+        
+        list = new SearchProduct(map, ServerConstants.SEARCH_PRODUCT).allResult();
+        if(list.size() > 0)
+        {
+            i = 0;
+            while(i < list.size())
+            {
+                tableModel.insertRow(i, new Object[]{
+                                    String.valueOf(i+1),
+                                    list.get(i).getPid(),
+                                    list.get(i).getDesign(),
+                                    list.get(i).getRack(),
+                                    list.get(i).getSubrack(),
+                                    list.get(i).getTexture(),
+                                    list.get(i).getQty()
+                                    });
+                i++;
+            }
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "Failed to fetch product", "Information", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_searchBtnSSummaryActionPerformed
+
+    private void viewAllBtnSSummaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewAllBtnSSummaryActionPerformed
+        
+        DefaultTableModel tableModel = (DefaultTableModel) StockSummaryTable.getModel();
+        ArrayList<ProductModel> list = new ArrayList<>();
+        int i = 0;
+        while(tableModel.getRowCount() > 0)
+        {
+            for(i = 0; i < tableModel.getRowCount(); i++)
+            {
+                tableModel.removeRow(i);
+            }
+        }
+        
+        HashMap<String,String> map = new HashMap<>();
+        map.put("pid", "");
+        map.put("design", "");
+        
+        list = new SearchProduct(map, ServerConstants.SEARCH_PRODUCT).allResult();
+        if(list.size() > 0)
+        {
+            i = 0;
+            while(i < list.size())
+            {
+                tableModel.insertRow(i, new Object[]{
+                                    String.valueOf(i+1),
+                                    list.get(i).getPid(),
+                                    list.get(i).getDesign(),
+                                    list.get(i).getRack(),
+                                    list.get(i).getSubrack(),
+                                    list.get(i).getTexture(),
+                                    list.get(i).getQty()
+                                    });
+                i++;
+            }
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "Failed to fetch product", "Information", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_viewAllBtnSSummaryActionPerformed
+
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        setPanelVisibility(AddClient);
+        setTitle(TITLE + " - Client Record");
+        fetchClients("", "");
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
+
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        setPanelVisibility(FavouriteClientPanel);
+        setTitle(TITLE + " - Favourite Client");
+        fetchFavouriteClients("", "");
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
+
+    private void clientViewAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientViewAllActionPerformed
+        // TODO add your handling code here:
+        fetchClients("", "");
+    }//GEN-LAST:event_clientViewAllActionPerformed
+
+    private void ClientUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClientUpdateActionPerformed
+        // TODO add your handling code here:
+        String id = ClientID.getText();
+        if(id.equals(""))
+        {
+            JOptionPane.showMessageDialog(null, "Click on the client from the below table you want to update.", "Alert",JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        String name = ClientName.getText();
+        String comapny = ClientComapny.getText();
+        String address = ClientAddress.getText();
+        String phoneNo = ClientPhone.getText();
+        String favoirite = ClientFavouriteCheckbox.isSelected() ? "Yes" : "No";
+        if(name.equals(""))
+        JOptionPane.showMessageDialog(null,"Enter Client name","Alert",JOptionPane.WARNING_MESSAGE);
+        else
+        if(comapny.equals(""))
+        JOptionPane.showMessageDialog(null,"Enter Company name","Alert",JOptionPane.WARNING_MESSAGE);
+        else
+        if(!phoneNo.equals("") && (!validateNumberInput(phoneNo) || !(phoneNo.length()>=10 && phoneNo.length()<=12)))
+        JOptionPane.showMessageDialog(null,"Enter valid phone","Alert",JOptionPane.WARNING_MESSAGE);
+        else
+        {
+            HashMap<String,String> hm = new HashMap<>();
+            hm.put("id", id);
+            hm.put("name", name);
+            hm.put("company", comapny);
+            hm.put("contact", phoneNo);
+            hm.put("address", address);
+            hm.put("favourite", favoirite);
+            String serverReply = new SaveClient(hm, ServerConstants.UPDATE_CLIENT).serverResponse();
+
+            CustomJsonParser parser = new CustomJsonParser(serverReply);
+            if(parser.getStatus())
+            {
+                fetchClients("","");
+                ClientUpdate.setEnabled(false);
+                ClientDelete.setEnabled(false);
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Server responded with error\n\n"+parser.getReason(),"Error",JOptionPane.ERROR_MESSAGE);
+            }
+
+        }
+
+        
+    }//GEN-LAST:event_ClientUpdateActionPerformed
+
+    private void ClientDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClientDeleteActionPerformed
+      String id = ClientID.getText();
+        if(id.equals(""))
+        {
+            JOptionPane.showMessageDialog(null, "Click on the client from the below table you want to update.", "Alert",JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        String name = ClientName.getText();
+        String comapny = ClientComapny.getText();
+        String address = ClientAddress.getText();
+        String phoneNo = ClientPhone.getText();
+        String favoirite = ClientFavouriteCheckbox.isSelected() ? "Yes" : "No";
+        if(name.equals(""))
+        JOptionPane.showMessageDialog(null,"Enter Client name","Alert",JOptionPane.WARNING_MESSAGE);
+        else
+        if(comapny.equals(""))
+        JOptionPane.showMessageDialog(null,"Enter Company name","Alert",JOptionPane.WARNING_MESSAGE);
+        else
+        if(!phoneNo.equals("") && (!validateNumberInput(phoneNo) || !(phoneNo.length()>=10 && phoneNo.length()<=12)))
+        JOptionPane.showMessageDialog(null,"Enter valid phone","Alert",JOptionPane.WARNING_MESSAGE);
+        else
+        {
+            HashMap<String,String> hm = new HashMap<>();
+            hm.put("id", id);
+            hm.put("name", name);
+            hm.put("company", comapny);
+            hm.put("contact", phoneNo);
+            hm.put("address", address);
+            hm.put("favourite", favoirite);
+            String serverReply = new SaveClient(hm, ServerConstants.DELETE_CLIENT).serverResponse();
+
+            CustomJsonParser parser = new CustomJsonParser(serverReply);
+            if(parser.getStatus())
+            {
+                fetchClients("","");
+                ClientUpdate.setEnabled(false);
+                ClientDelete.setEnabled(false);
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Server responded with error\n\n"+parser.getReason(),"Error",JOptionPane.ERROR_MESSAGE);
+            }
+
+        }
+
+    }//GEN-LAST:event_ClientDeleteActionPerformed
+
+    private void ClientAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClientAddActionPerformed
+        String name = ClientName.getText();
+        String comapny = ClientComapny.getText();
+        String address = ClientAddress.getText();
+        String phoneNo = ClientPhone.getText();
+        String favoirite = ClientFavouriteCheckbox.isSelected() ? "Yes" : "No";
+        if(name.equals(""))
+        JOptionPane.showMessageDialog(null,"Enter Client name","Alert",JOptionPane.WARNING_MESSAGE);
+        else
+        if(comapny.equals(""))
+        JOptionPane.showMessageDialog(null,"Enter Company name","Alert",JOptionPane.WARNING_MESSAGE);
+        else
+        if(!phoneNo.equals("") && (!validateNumberInput(phoneNo) || !(phoneNo.length()>=10 && phoneNo.length()<=12)))
+        JOptionPane.showMessageDialog(null,"Enter valid phone","Alert",JOptionPane.WARNING_MESSAGE);
+        else
+        {
+            HashMap<String,String> hm = new HashMap<>();
+            hm.put("name", name);
+            hm.put("company", comapny);
+            hm.put("contact", phoneNo);
+            hm.put("address", address);
+            hm.put("favourite", favoirite);
+            String serverReply = new SaveClient(hm, ServerConstants.SAVE_CLIENT).serverResponse();
+
+            CustomJsonParser parser = new CustomJsonParser(serverReply);
+            if(parser.getStatus())
+            {
+                System.err.println(parser.getStatus()+" ");
+                fetchClients("","");
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Server responded with error\n\n"+parser.getReason(),"Error",JOptionPane.ERROR_MESSAGE);
+            }
+
+        }
+
+    }//GEN-LAST:event_ClientAddActionPerformed
+
+    private void ClientPhoneKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ClientPhoneKeyReleased
+
+    }//GEN-LAST:event_ClientPhoneKeyReleased
+
+    private void ClientPhoneKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ClientPhoneKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ClientPhoneKeyPressed
+
+    private void ClientPhoneKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ClientPhoneKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ClientPhoneKeyTyped
+
+    private void ClientPhoneInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_ClientPhoneInputMethodTextChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ClientPhoneInputMethodTextChanged
+
+    private void ClientComapnyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ClientComapnyKeyReleased
+        if(ClientName.getText().trim().length()>0 && ClientComapny.getText().trim().length()>0)
+        {
+            ClientAdd.setEnabled(true);
+            
+        }
+        else
+        {
+            ClientAdd.setEnabled(false);
+            
+        }
+        
+        if(ClientName.getText().trim().length()>0 || ClientComapny.getText().trim().length()>0)
+            clientSearchBtn.setEnabled(true);
+        else
+            clientSearchBtn.setEnabled(false);
+    }//GEN-LAST:event_ClientComapnyKeyReleased
+
+    private void ClientComapnyKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ClientComapnyKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ClientComapnyKeyPressed
+
+    private void ClientComapnyKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ClientComapnyKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ClientComapnyKeyTyped
+
+    private void ClientComapnyInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_ClientComapnyInputMethodTextChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ClientComapnyInputMethodTextChanged
+
+    private void ClientNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ClientNameKeyReleased
+        if(ClientName.getText().trim().length()>0 && ClientComapny.getText().trim().length()>0)
+        {
+            ClientAdd.setEnabled(true);
+        }
+        else
+        {
+            ClientAdd.setEnabled(false);
+        }
+        
+        if(ClientName.getText().trim().length()>0 || ClientComapny.getText().trim().length()>0)
+            clientSearchBtn.setEnabled(true);
+        else
+            clientSearchBtn.setEnabled(false);
+        
+    }//GEN-LAST:event_ClientNameKeyReleased
+
+    private void ClientNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ClientNameKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ClientNameKeyPressed
+
+    private void ClientNameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ClientNameKeyTyped
+
+    }//GEN-LAST:event_ClientNameKeyTyped
+
+    private void ClientNameInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_ClientNameInputMethodTextChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ClientNameInputMethodTextChanged
+
+    private void clientSearchBtnKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_clientSearchBtnKeyReleased
+        
+    }//GEN-LAST:event_clientSearchBtnKeyReleased
+
+    private void clientSearchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientSearchBtnActionPerformed
+        // TODO add your handling code here:
+        fetchClients(ClientName.getText(), ClientComapny.getText());
+    }//GEN-LAST:event_clientSearchBtnActionPerformed
+
+    private void ClientTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ClientTableMouseClicked
+        // TODO add your handling code here:
+        ClientUpdate.setEnabled(true);
+        ClientDelete.setEnabled(true);
+        DefaultTableModel model = (DefaultTableModel) ClientTable.getModel();
+        int selectedRowIndex = ClientTable.getSelectedRow();
+        
+        ClientName.setText((String) model.getValueAt(selectedRowIndex, 0));
+        ClientComapny.setText((String) model.getValueAt(selectedRowIndex, 1));
+        ClientPhone.setText((String) model.getValueAt(selectedRowIndex, 2));
+        ClientAddress.setText((String) model.getValueAt(selectedRowIndex, 3));
+        ClientFavouriteCheckbox.setSelected(String.valueOf(model.getValueAt(selectedRowIndex, 4)).equalsIgnoreCase("Yes"));
+        ClientID.setText((String) model.getValueAt(selectedRowIndex, 5));
+    }//GEN-LAST:event_ClientTableMouseClicked
+
+    private void FavouriteClientTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FavouriteClientTableMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_FavouriteClientTableMouseClicked
+
+    private void FavClientNameInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_FavClientNameInputMethodTextChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_FavClientNameInputMethodTextChanged
+
+    private void FavClientNameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FavClientNameKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_FavClientNameKeyTyped
+
+    private void FavClientNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FavClientNameKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_FavClientNameKeyPressed
+
+    private void FavClientNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FavClientNameKeyReleased
+        // TODO add your handling code here:
+        if(!FavClientName.getText().equals("") || !FavClientComapny.getText().equals(""))
+            FavSearchBtn.setEnabled(true);
+        else
+            FavSearchBtn.setEnabled(false);
+    }//GEN-LAST:event_FavClientNameKeyReleased
+
+    private void FavClientComapnyInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_FavClientComapnyInputMethodTextChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_FavClientComapnyInputMethodTextChanged
+
+    private void FavClientComapnyKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FavClientComapnyKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_FavClientComapnyKeyTyped
+
+    private void FavClientComapnyKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FavClientComapnyKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_FavClientComapnyKeyPressed
+
+    private void FavClientComapnyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FavClientComapnyKeyReleased
+        if(!FavClientName.getText().equals("") || !FavClientComapny.getText().equals(""))
+            FavSearchBtn.setEnabled(true);
+        else
+            FavSearchBtn.setEnabled(false);
+    }//GEN-LAST:event_FavClientComapnyKeyReleased
+
+    private void FavSearchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FavSearchBtnActionPerformed
+        String name = FavClientName.getText().trim().equals("") ? " " : FavClientName.getText();
+        String company = FavClientComapny.getText().trim().equals("") ? " " : FavClientComapny.getText();
+        fetchFavouriteClients(name,company);
+        FavClientComapny.setText("");
+        FavClientName.setText("");
+        FavSearchBtn.setEnabled(false);
+    }//GEN-LAST:event_FavSearchBtnActionPerformed
+
+    private void rackNoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_rackNoKeyReleased
+        if(rackNo.getText().trim().length() > 0)
+            editUpdateBtn.setEnabled(true);
+        else
+            editUpdateBtn.setEnabled(false);
+    }//GEN-LAST:event_rackNoKeyReleased
+
     /**
      * @param args the command line arguments
      */
@@ -1274,11 +2142,26 @@ public class MainUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AddBulkItemPane;
-    private javax.swing.JPanel AddClientPanel;
+    private javax.swing.JPanel AddClient;
     private javax.swing.JPanel AddSingleItemPane;
     private javax.swing.JProgressBar AddSingleProgress;
     private javax.swing.JLabel AddSingleProgressReport;
     private javax.swing.JTable BulkItemTable;
+    private javax.swing.JButton ClientAdd;
+    private javax.swing.JTextArea ClientAddress;
+    private javax.swing.JTextField ClientComapny;
+    private javax.swing.JButton ClientDelete;
+    private javax.swing.JCheckBox ClientFavouriteCheckbox;
+    private javax.swing.JLabel ClientID;
+    private javax.swing.JTextField ClientName;
+    private javax.swing.JTextField ClientPhone;
+    private javax.swing.JTable ClientTable;
+    private javax.swing.JButton ClientUpdate;
+    private javax.swing.JTextField FavClientComapny;
+    private javax.swing.JTextField FavClientName;
+    private javax.swing.JButton FavSearchBtn;
+    private javax.swing.JPanel FavouriteClientPanel;
+    private javax.swing.JTable FavouriteClientTable;
     private javax.swing.JPanel StockPane;
     private javax.swing.JPanel StockSummaryPane;
     private javax.swing.JProgressBar StockSummaryProgress;
@@ -1287,6 +2170,8 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JButton addBtnAddBulk;
     private javax.swing.JLabel barcodeAddBulk;
     private javax.swing.JLabel barcodeAddSingle;
+    private javax.swing.JButton clientSearchBtn;
+    private javax.swing.JButton clientViewAll;
     private javax.swing.JTextField designName;
     private javax.swing.JTextField designNameAddBulk;
     private javax.swing.JTextField designNameAddSingle;
@@ -1306,6 +2191,12 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1328,7 +2219,10 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JProgressBar mainUiProgress;
@@ -1356,6 +2250,7 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JTextField textureAddBulk;
     private javax.swing.JTextField textureAddSingle;
     private javax.swing.JButton updateCancleBtn;
+    private javax.swing.JButton viewAllBtnSSummary;
     // End of variables declaration//GEN-END:variables
 
     private void setPanelVisibility(JPanel currentPanel) {
@@ -1363,6 +2258,8 @@ public class MainUI extends javax.swing.JFrame {
         StockSummaryPane.setVisible(false);
         AddSingleItemPane.setVisible(false);
         AddBulkItemPane.setVisible(false);
+        AddClient.setVisible(false);
+        FavouriteClientPanel.setVisible(false);
         currentPanel.setVisible(true);
     }
 
@@ -1373,5 +2270,124 @@ public class MainUI extends javax.swing.JFrame {
                 return isValid;
         isValid = true;
         return isValid;
+    }
+
+    private void fetchSingleResult() {
+        String pID = productID.getText().trim().equals("") ? " " : productID.getText();
+        String design = " ";
+        
+        HashMap<String,String> map = new HashMap<>();
+        map.put("pid", pID);
+        map.put("design", pID);
+    
+        ProductModel model = new SearchProduct(map, ServerConstants.SEARCH_PRODUCT).specificResult(pID);
+        if(model==null)
+        {
+            JOptionPane.showMessageDialog(null, "No product found with ID "+pID, "Search Result", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else
+        {
+            productID.setText(model.getPid());
+            designName.setText(model.getDesign());
+            rackNo.setText(model.getRack());
+            subRackNo.setText(model.getSubrack());
+            qty.setText(model.getQty());
+            texture.setText(model.getTexture());
+            editUpdateBtn.setEnabled(true);
+        }
+    }
+
+    private void fetchClients(String name, String company) {
+        DefaultTableModel tableModel = (DefaultTableModel) ClientTable.getModel();
+        ArrayList<ClientModel> list = new ArrayList<>();
+        int i = 0;
+        while(tableModel.getRowCount() > 0)
+        {
+            for(i = 0; i < tableModel.getRowCount(); i++)
+            {
+                tableModel.removeRow(i);
+            }
+        }
+        
+        HashMap<String,String> map = new HashMap<>();
+        map.put("name", name);
+        map.put("company", company);
+        
+        list = new ClientAccess(map, ServerConstants.FETCH_CLIENT).allResult();
+        if(list.size() > 0)
+        {
+            i = 0;
+            while(i < list.size())
+            {
+                tableModel.insertRow(i, new Object[]{
+                                    list.get(i).getName(),
+                                    list.get(i).getCompany(),
+                                    list.get(i).getContact(),
+                                    list.get(i).getAddress(),
+                                    list.get(i).getFavourite(),
+                                    list.get(i).getId()
+                                    });
+                i++;
+            }
+            
+            ClientName.setText("");
+            ClientAddress.setText("");
+            ClientPhone.setText("");
+            ClientComapny.setText("");
+            ClientID.setText("");
+            ClientFavouriteCheckbox.setSelected(false);
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "No saved client was found", "Information", JOptionPane.INFORMATION_MESSAGE);
+        }
+        
+    }
+    
+    private void fetchFavouriteClients(String name, String company) {
+        DefaultTableModel tableModel = (DefaultTableModel) FavouriteClientTable.getModel();
+        ArrayList<ClientModel> list = new ArrayList<>();
+        int i = 0;
+        
+        while(tableModel.getRowCount() > 0)
+        {
+            for(i = 0; i < tableModel.getRowCount(); i++)
+            {
+                tableModel.removeRow(i);
+            }
+        }
+        
+        HashMap<String,String> map = new HashMap<>();
+        map.put("name", name);
+        map.put("company", company);
+        
+        list = new ClientAccess(map, ServerConstants.FETCH_CLIENT).allResult();
+        if(list.size() > 0)
+        {
+            i = 0;
+            while(i < list.size())
+            {
+                if(!list.get(i).getFavourite().equalsIgnoreCase("Yes"))
+                {
+                    i++;
+                    continue;
+                }
+                tableModel.insertRow(i, new Object[]{
+                                    list.get(i).getName(),
+                                    list.get(i).getCompany(),
+                                    list.get(i).getContact(),
+                                    list.get(i).getAddress(),
+                                    list.get(i).getFavourite(),
+                                    list.get(i).getId()
+                                    });
+                i++;
+            }
+            
+        }
+        if(tableModel.getRowCount() == 0)
+        {
+            JOptionPane.showMessageDialog(null, "No saved client was found", "Information", JOptionPane.INFORMATION_MESSAGE);
+        }
+        
     }
 }

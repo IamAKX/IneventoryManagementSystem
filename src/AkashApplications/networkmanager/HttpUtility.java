@@ -31,7 +31,7 @@ public static HttpURLConnection sendGetRequest(String requestUrl) throws IOExcep
         URL url = new URL(requestUrl);
         httpConn = (HttpURLConnection) url.openConnection();
         httpConn.setUseCaches(false);
- 
+        httpConn.setDefaultUseCaches(false);
         httpConn.setDoInput(true); // true if we want to read server's response
         httpConn.setDoOutput(false); // false indicates this is a GET request
  
@@ -42,7 +42,7 @@ public static HttpURLConnection sendPostRequest(String requestURL,Map<String, St
         URL url = new URL(requestURL);
         httpConn = (HttpURLConnection) url.openConnection();
         httpConn.setUseCaches(false);
- 
+        httpConn.setDefaultUseCaches(false);
         httpConn.setDoInput(true); // true indicates the server returns response
  
         StringBuffer requestParams = new StringBuffer();
@@ -98,12 +98,14 @@ public static HttpURLConnection sendPostRequest(String requestURL,Map<String, St
  
         BufferedReader reader = new BufferedReader(new InputStreamReader(
                 inputStream));
+        
         List<String> response = new ArrayList<String>();
  
         String line = "";
         while ((line = reader.readLine()) != null) {
             response.add(line);
         }
+        
         reader.close();
  
         return (String[]) response.toArray(new String[0]);
@@ -111,6 +113,7 @@ public static HttpURLConnection sendPostRequest(String requestURL,Map<String, St
     
     public static void disconnect() {
         if (httpConn != null) {
+            
             httpConn.disconnect();
         }
     }
