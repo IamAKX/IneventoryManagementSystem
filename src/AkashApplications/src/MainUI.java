@@ -14,15 +14,29 @@ import AkashApplications.networkmanager.SendBulkRequest;
 import AkashApplications.networkmanager.SendRequest;
 import AkashApplications.networkmanager.ServerConstants;
 import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.omg.CORBA.ServerRequest;
 
 /**
@@ -56,6 +70,56 @@ public class MainUI extends javax.swing.JFrame {
         FavouriteClientTable.getColumnModel().getColumn(5).setMinWidth(0);
         FavouriteClientTable.getColumnModel().getColumn(5).setPreferredWidth(0);
         
+        printTable.getColumnModel().getColumn(6).setMaxWidth(0);
+        printTable.getColumnModel().getColumn(6).setMinWidth(0);
+        printTable.getColumnModel().getColumn(6).setPreferredWidth(0);
+        printTable.getColumnModel().getColumn(0).setPreferredWidth(30);
+        printTable.getColumnModel().getColumn(1).setPreferredWidth(320);
+        
+        JPopupMenu popupMenu = new JPopupMenu();
+        JMenuItem copyItem = new JMenuItem("Copy");
+        copyItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DefaultTableModel dtm = (DefaultTableModel)ClientTable.getModel();
+                int row = ClientTable.getSelectedRow();
+                String content = ""+(String) dtm.getValueAt(row, 0)+"\n"+
+                        (String) dtm.getValueAt(row, 1)+"\n"+
+                        (String) dtm.getValueAt(row, 3);
+                StringSelection selection = new StringSelection(content);
+                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                clipboard.setContents(selection, selection);
+            }
+        });
+        popupMenu.add(copyItem);
+        ClientTable.setComponentPopupMenu(popupMenu);
+        
+        JPopupMenu popupMenu1 = new JPopupMenu();
+        JMenuItem copyItem1 = new JMenuItem("Copy");
+        copyItem1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DefaultTableModel dtm = (DefaultTableModel)FavouriteClientTable.getModel();
+                int row = FavouriteClientTable.getSelectedRow();
+                String content = ""+(String) dtm.getValueAt(row, 0)+"\n"+
+                        (String) dtm.getValueAt(row, 1)+"\n"+
+                        (String) dtm.getValueAt(row, 3);
+                StringSelection selection = new StringSelection(content);
+                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                clipboard.setContents(selection, selection);
+            }
+        });
+        popupMenu1.add(copyItem1);
+        FavouriteClientTable.setComponentPopupMenu(popupMenu1);
+        
+        setdate(printDate);
+        try {
+            printInvoiceNote.setText(String.format("%06d", new InvoiceNoteManager().getProperty()));
+        } catch (IOException ex) {
+            Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
         setTitle(TITLE+" - Stock");
         
      
@@ -71,6 +135,30 @@ public class MainUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        PrintChalanPanel = new javax.swing.JPanel();
+        jLabel25 = new javax.swing.JLabel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        printBuyerDetail = new javax.swing.JTextArea();
+        printInvoiceNote = new javax.swing.JLabel();
+        printDate = new javax.swing.JTextField();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        printDeliveryTerms = new javax.swing.JTextArea();
+        jLabel30 = new javax.swing.JLabel();
+        jLabel31 = new javax.swing.JLabel();
+        printProductId = new javax.swing.JTextField();
+        jLabel32 = new javax.swing.JLabel();
+        printQty = new javax.swing.JTextField();
+        jLabel33 = new javax.swing.JLabel();
+        printRate = new javax.swing.JTextField();
+        printAddBtn = new javax.swing.JButton();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        printTable = new javax.swing.JTable();
+        jLabel29 = new javax.swing.JLabel();
+        printVat = new javax.swing.JTextField();
+        printPrintBtn = new javax.swing.JButton();
+        jLabel28 = new javax.swing.JLabel();
+        printTotalSum = new javax.swing.JLabel();
+        jLabel34 = new javax.swing.JLabel();
         StockPane = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         productID = new javax.swing.JTextField();
@@ -186,6 +274,208 @@ public class MainUI extends javax.swing.JFrame {
         setTitle("Inventory Management");
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        PrintChalanPanel.setPreferredSize(new java.awt.Dimension(810, 540));
+
+        jLabel25.setText("Buyer Name and Address");
+
+        printBuyerDetail.setColumns(20);
+        printBuyerDetail.setRows(5);
+        jScrollPane6.setViewportView(printBuyerDetail);
+
+        printInvoiceNote.setText("00000");
+
+        printDeliveryTerms.setColumns(20);
+        printDeliveryTerms.setRows(5);
+        jScrollPane7.setViewportView(printDeliveryTerms);
+
+        jLabel30.setText("Delivery terms");
+
+        jLabel31.setText("Product ID");
+
+        printProductId.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                printProductIdKeyReleased(evt);
+            }
+        });
+
+        jLabel32.setText("Qty");
+
+        printQty.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                printQtyKeyReleased(evt);
+            }
+        });
+
+        jLabel33.setText("Rate per sq. m");
+
+        printRate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printRateActionPerformed(evt);
+            }
+        });
+        printRate.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                printRateKeyReleased(evt);
+            }
+        });
+
+        printAddBtn.setText("Add");
+        printAddBtn.setEnabled(false);
+        printAddBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printAddBtnActionPerformed(evt);
+            }
+        });
+
+        printTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Sl. No.", "Description of Good", "VAT %", "Rate per sq. m", "Qty", "Amount", "productId"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        printTable.setFocusTraversalPolicyProvider(true);
+        jScrollPane8.setViewportView(printTable);
+        if (printTable.getColumnModel().getColumnCount() > 0) {
+            printTable.getColumnModel().getColumn(0).setPreferredWidth(10);
+        }
+
+        jLabel29.setText("VAT %");
+
+        printVat.setText("0");
+        printVat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printVatActionPerformed(evt);
+            }
+        });
+        printVat.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                printVatKeyReleased(evt);
+            }
+        });
+
+        printPrintBtn.setText("Print");
+        printPrintBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printPrintBtnActionPerformed(evt);
+            }
+        });
+
+        jLabel28.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
+        jLabel28.setText("Total =  Rs.");
+
+        printTotalSum.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
+        printTotalSum.setText("0.00");
+
+        jLabel34.setText("Invoice Note : ");
+
+        javax.swing.GroupLayout PrintChalanPanelLayout = new javax.swing.GroupLayout(PrintChalanPanel);
+        PrintChalanPanel.setLayout(PrintChalanPanelLayout);
+        PrintChalanPanelLayout.setHorizontalGroup(
+            PrintChalanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PrintChalanPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(PrintChalanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PrintChalanPanelLayout.createSequentialGroup()
+                        .addComponent(jScrollPane8)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PrintChalanPanelLayout.createSequentialGroup()
+                        .addGroup(PrintChalanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(PrintChalanPanelLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(printAddBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, PrintChalanPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel25)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(PrintChalanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(PrintChalanPanelLayout.createSequentialGroup()
+                                        .addComponent(jLabel34, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGap(0, 0, 0)
+                                        .addComponent(printInvoiceNote, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(printDate, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(PrintChalanPanelLayout.createSequentialGroup()
+                                        .addComponent(jLabel30, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, PrintChalanPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel31)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(printProductId, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel32)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(printQty)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel33)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(printRate, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel29)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(printVat, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(24, 24, 24))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PrintChalanPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel28)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(printTotalSum, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(97, 97, 97)
+                .addComponent(printPrintBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
+        );
+        PrintChalanPanelLayout.setVerticalGroup(
+            PrintChalanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PrintChalanPanelLayout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(PrintChalanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(PrintChalanPanelLayout.createSequentialGroup()
+                        .addGroup(PrintChalanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(printDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(printInvoiceNote)
+                            .addComponent(jLabel34))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(PrintChalanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel30)
+                            .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel25)
+                    .addComponent(jScrollPane6))
+                .addGap(32, 32, 32)
+                .addGroup(PrintChalanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(printProductId, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel32)
+                    .addComponent(printQty, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel33)
+                    .addComponent(printRate, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel31)
+                    .addComponent(jLabel29)
+                    .addComponent(printVat, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(printAddBtn)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(PrintChalanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(printTotalSum, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(PrintChalanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(printPrintBtn)
+                        .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(27, 27, 27))
+        );
+
+        getContentPane().add(PrintChalanPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         jLabel2.setText("Product ID");
 
@@ -363,7 +653,7 @@ public class MainUI extends javax.swing.JFrame {
                     .addComponent(editUpdateBtn)
                     .addComponent(searchBtn))
                 .addGap(30, 30, 30)
-                .addComponent(mainUiProgress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(mainUiProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(mainUiProgressReport, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -645,10 +935,6 @@ public class MainUI extends javax.swing.JFrame {
             }
         });
 
-        ClientID.setMaximumSize(new java.awt.Dimension(0, 0));
-        ClientID.setMinimumSize(new java.awt.Dimension(0, 0));
-        ClientID.setPreferredSize(new java.awt.Dimension(0, 0));
-
         javax.swing.GroupLayout AddClientLayout = new javax.swing.GroupLayout(AddClient);
         AddClient.setLayout(AddClientLayout);
         AddClientLayout.setHorizontalGroup(
@@ -681,7 +967,7 @@ public class MainUI extends javax.swing.JFrame {
                                         .addGroup(AddClientLayout.createSequentialGroup()
                                             .addComponent(ClientFavouriteCheckbox, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGap(61, 61, 61)
-                                            .addComponent(ClientID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(ClientID, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGap(0, 0, Short.MAX_VALUE)))
                                     .addGroup(AddClientLayout.createSequentialGroup()
                                         .addGap(6, 6, 6)
@@ -716,7 +1002,7 @@ public class MainUI extends javax.swing.JFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addGroup(AddClientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(ClientFavouriteCheckbox)
-                                .addComponent(ClientID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(ClientID, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(AddClientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(ClientAdd)
@@ -881,7 +1167,7 @@ public class MainUI extends javax.swing.JFrame {
                     .addComponent(saveAddSingle)
                     .addComponent(generateBarcodeAddSingle))
                 .addGap(30, 30, 30)
-                .addComponent(AddSingleProgress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(AddSingleProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(AddSingleProgressReport, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -1212,6 +1498,11 @@ public class MainUI extends javax.swing.JFrame {
 
         jMenuItem6.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem6.setText("Print Chalan");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem6);
         jMenu1.add(jSeparator1);
 
@@ -1524,6 +1815,7 @@ public class MainUI extends javax.swing.JFrame {
     private void saveAddSingleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAddSingleActionPerformed
         try {
             // TODO add your handling code here:
+            
             String pId = productIDAddSingle.getText();
             String design = designNameAddSingle.getText();
             String rack = rackNoAddSingle.getText();
@@ -1531,7 +1823,7 @@ public class MainUI extends javax.swing.JFrame {
             String qty = qtyAddSingle.getText();
             String texture = textureAddSingle.getText();
             
-            //new ProgressBarUpdate(AddSingleProgress, AddSingleProgressReport).doInBackground();
+            
             HashMap<String,String> map = new HashMap<String,String>();
             map.put("pid",pId);
             map.put("design",design);
@@ -1545,7 +1837,7 @@ public class MainUI extends javax.swing.JFrame {
             CustomJsonParser parser = new CustomJsonParser(s);
             if(parser.getStatus())
             {
-                AddSingleProgress.setValue(0);
+                
                 AddSingleProgressReport.setText("");
                 
                 productIDAddSingle.setText("");
@@ -1559,7 +1851,7 @@ public class MainUI extends javax.swing.JFrame {
             }
             else
             {
-                AddSingleProgress.setValue(0);
+                
                 AddSingleProgressReport.setText(parser.getReason());
             }
             
@@ -1570,6 +1862,10 @@ public class MainUI extends javax.swing.JFrame {
 
     private void addBtnAddBulkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnAddBulkActionPerformed
         // TODO add your handling code here:
+        progressReportAddBulk.setText("Generating and saving barcode...");
+        ProgressTask pt = new ProgressTask(progressBarAddBulk);
+        pt.execute();
+        
         String pId = productIDAddBulk.getText();
         String design = designNameAddBulk.getText();
         String rack = rackNoAddBulk.getText();
@@ -1626,6 +1922,8 @@ public class MainUI extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null,"Failed to generate barcode\n\nError : "+ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
             }
          }
+        progressReportAddBulk.setText("");
+        pt.stopPrgress();
     }//GEN-LAST:event_addBtnAddBulkActionPerformed
 
     private void textureAddSingleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textureAddSingleActionPerformed
@@ -1643,8 +1941,8 @@ public class MainUI extends javax.swing.JFrame {
     private void saveAllBtnAddBulkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAllBtnAddBulkActionPerformed
         // TODO add your handling code here:
        ArrayList<ProductModel> list = new ArrayList<>();
-       int progressInterval = 100/BulkItemTable.getRowCount();
-       progressBarAddBulk.setValue(progressInterval);
+       ProgressTask pt = new ProgressTask(progressBarAddBulk);
+       pt.execute();
        progressReportAddBulk.setText("Preparing Table");
        for(int i=0; i<BulkItemTable.getRowCount(); i++)
        {
@@ -1657,19 +1955,18 @@ public class MainUI extends javax.swing.JFrame {
                        String.valueOf(BulkItemTable.getValueAt(i, 5)),
                        String.valueOf(BulkItemTable.getValueAt(i, 6))));
                
-               new ProgressBarUpdate(progressBarAddBulk, progressReportAddBulk, "Preparing Table : "+(i+1)+"/"+BulkItemTable.getRowCount(), progressInterval).setProgerss();
+               
            } catch (Exception ex) {
                System.err.println(ex.getMessage());
            }
        }
-       progressBarAddBulk.setValue(100);
-       progressBarAddBulk.setValue(0);
+       
        progressReportAddBulk.setText("Requestings server...");
        
        for(int i = 0; i < list.size(); i++ )
        {
            try {
-               new ProgressBarUpdate(progressBarAddBulk, progressReportAddBulk, "Saving Product "+(i+1)+" out of "+list.size()+"...", progressInterval).setProgerss();
+       
                ProductModel pm = list.get(i);
                HashMap<String,String> map = new HashMap<>();
                map.put("pid",pm.getPid());
@@ -1688,16 +1985,28 @@ public class MainUI extends javax.swing.JFrame {
                    break;
                }
            } catch (Exception ex) {
-               System.err.println(ex.getMessage());
+               
            }
        }
-       
-    progressBarAddBulk.setValue(100);
+       DefaultTableModel tableModel = (DefaultTableModel) BulkItemTable.getModel();
+       while(tableModel.getRowCount() > 0)
+        {
+            for(int i = 0; i < tableModel.getRowCount(); i++)
+            {
+                tableModel.removeRow(i);
+            }
+        }
+    pt.stopPrgress();
     progressReportAddBulk.setText("All products were saved successfully...");
     }//GEN-LAST:event_saveAllBtnAddBulkActionPerformed
 
     private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
+        //ProgressBarUpdate pbu = new ProgressBarUpdate(mainUiProgress);
+        //pbu.execute();
+        mainUiProgress.setIndeterminate(true);
         fetchSingleResult();
+        mainUiProgress.setIndeterminate(false);
+        //pbu.stopProgress();
     }//GEN-LAST:event_searchBtnActionPerformed
 
     private void rackNoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_rackNoKeyTyped
@@ -1711,6 +2020,7 @@ public class MainUI extends javax.swing.JFrame {
     }//GEN-LAST:event_rackNoInputMethodTextChanged
 
     private void searchBtnSSummaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnSSummaryActionPerformed
+        StockSummaryProgress.setIndeterminate(true);
         String pID = productIDSSummary.getText().trim().equals("") ? " " : productIDSSummary.getText();
         String design = designNameSSummary.getText().trim().equals("") ? " " : designNameSSummary.getText();
         DefaultTableModel tableModel = (DefaultTableModel) StockSummaryTable.getModel();
@@ -1750,10 +2060,11 @@ public class MainUI extends javax.swing.JFrame {
         {
             JOptionPane.showMessageDialog(null, "Failed to fetch product", "Information", JOptionPane.INFORMATION_MESSAGE);
         }
+        StockSummaryProgress.setIndeterminate(false);
     }//GEN-LAST:event_searchBtnSSummaryActionPerformed
 
     private void viewAllBtnSSummaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewAllBtnSSummaryActionPerformed
-        
+        StockSummaryProgress.setIndeterminate(true);
         DefaultTableModel tableModel = (DefaultTableModel) StockSummaryTable.getModel();
         ArrayList<ProductModel> list = new ArrayList<>();
         int i = 0;
@@ -1791,6 +2102,7 @@ public class MainUI extends javax.swing.JFrame {
         {
             JOptionPane.showMessageDialog(null, "Failed to fetch product", "Information", JOptionPane.INFORMATION_MESSAGE);
         }
+        StockSummaryProgress.setIndeterminate(false);
     }//GEN-LAST:event_viewAllBtnSSummaryActionPerformed
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
@@ -2105,6 +2417,106 @@ public class MainUI extends javax.swing.JFrame {
             editUpdateBtn.setEnabled(false);
     }//GEN-LAST:event_rackNoKeyReleased
 
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        // TODO add your handling code here:
+        setTitle(TITLE + " - Print Chalan");
+        setPanelVisibility(PrintChalanPanel);
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void printRateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printRateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_printRateActionPerformed
+
+    private void printAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printAddBtnActionPerformed
+        // TODO add your handling code here:
+        if(!validateNumberInput(printQty.getText().trim()))
+            JOptionPane.showMessageDialog(null,"Enter valid quantity","Alert",JOptionPane.WARNING_MESSAGE);
+        else
+            if(!validateNumberInput(printRate.getText().trim()))
+                JOptionPane.showMessageDialog(null,"Enter valid Rate per square meter","Alert",JOptionPane.WARNING_MESSAGE);
+        else
+            if(!validateNumberInput(printVat.getText().trim()))
+                JOptionPane.showMessageDialog(null,"Enter valid VAT rate","Alert",JOptionPane.WARNING_MESSAGE);
+        else
+            {
+                HashMap<String,String> map = new HashMap<>();
+                map.put("pid",printProductId.getText());
+                ProductModel model = new SearchProduct(map, ServerConstants.GET_PRODUCT).specificResult(printProductId.getText());
+                if(model == null)
+                {
+                    JOptionPane.showMessageDialog(null,"No prodct with ID "+printProductId.getText()+" was found in stock.\nPlease verify the product ID.","Alert",JOptionPane.WARNING_MESSAGE);
+                }
+                else
+                {
+                    DecimalFormat df = new DecimalFormat();
+                    df.setMaximumFractionDigits(2);
+                    DefaultTableModel dtm = (DefaultTableModel) printTable.getModel(); 
+                    float amt = Float.parseFloat(printQty.getText()) * Float.parseFloat(printRate.getText());
+                    float vat = Float.parseFloat(printVat.getText()) * amt / 100;
+                    amt += vat;
+                    String amount = df.format(amt);
+                    Object[] row = {String.valueOf(dtm.getRowCount()+1), model.getDesign()+" ("+model.getTexture()+")", printVat.getText() , printRate.getText(), printQty.getText(),amount,model.getPid()};
+                    dtm.addRow(row);
+                    amt += Float.parseFloat(printTotalSum.getText().replace(",", ""));
+                    amount = df.format(amt);
+                    if(amount.indexOf(".") == -1)
+                        amount+=".00";
+                    printTotalSum.setText(amount);
+                    
+                    printProductId.setText("");
+                    printRate.setText("");
+                    printVat.setText("0");
+                    printQty.setText("");
+                }
+            }
+        
+            
+    }//GEN-LAST:event_printAddBtnActionPerformed
+
+    private void printVatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printVatActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_printVatActionPerformed
+
+    private void printProductIdKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_printProductIdKeyReleased
+        // TODO add your handling code here:
+        if(printProductId.getText().isEmpty() || printVat.getText().isEmpty() || printRate.getText().isEmpty() || printQty.getText().isEmpty())
+            printAddBtn.setEnabled(false);
+        else
+            printAddBtn.setEnabled(true);
+    }//GEN-LAST:event_printProductIdKeyReleased
+
+    private void printQtyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_printQtyKeyReleased
+        if(printProductId.getText().isEmpty() || printVat.getText().isEmpty() || printRate.getText().isEmpty() || printQty.getText().isEmpty())
+            printAddBtn.setEnabled(false);
+        else
+            printAddBtn.setEnabled(true);
+    }//GEN-LAST:event_printQtyKeyReleased
+
+    private void printRateKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_printRateKeyReleased
+        if(printProductId.getText().isEmpty() || printVat.getText().isEmpty() || printRate.getText().isEmpty() || printQty.getText().isEmpty())
+            printAddBtn.setEnabled(false);
+        else
+            printAddBtn.setEnabled(true);
+    }//GEN-LAST:event_printRateKeyReleased
+
+    private void printVatKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_printVatKeyReleased
+        if(printProductId.getText().isEmpty() || printVat.getText().isEmpty() || printRate.getText().isEmpty() || printQty.getText().isEmpty())
+            printAddBtn.setEnabled(false);
+        else
+            printAddBtn.setEnabled(true);
+    }//GEN-LAST:event_printVatKeyReleased
+
+    private void printPrintBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printPrintBtnActionPerformed
+        try {
+            // TODO add your handling code here:
+            new GenerateInvoice(printBuyerDetail.getText(),printInvoiceNote.getText(), printDate.getText(), printDeliveryTerms.getText(), printTotalSum.getText(), printTable).printInvoice();
+        } catch (InvalidFormatException ex) {
+            Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_printPrintBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -2162,6 +2574,7 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JButton FavSearchBtn;
     private javax.swing.JPanel FavouriteClientPanel;
     private javax.swing.JTable FavouriteClientTable;
+    private javax.swing.JPanel PrintChalanPanel;
     private javax.swing.JPanel StockPane;
     private javax.swing.JPanel StockSummaryPane;
     private javax.swing.JProgressBar StockSummaryProgress;
@@ -2195,9 +2608,17 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -2224,9 +2645,24 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JProgressBar mainUiProgress;
     private javax.swing.JLabel mainUiProgressReport;
+    private javax.swing.JButton printAddBtn;
+    private javax.swing.JTextArea printBuyerDetail;
+    private javax.swing.JTextField printDate;
+    private javax.swing.JTextArea printDeliveryTerms;
+    private javax.swing.JLabel printInvoiceNote;
+    private javax.swing.JButton printPrintBtn;
+    private javax.swing.JTextField printProductId;
+    private javax.swing.JTextField printQty;
+    private javax.swing.JTextField printRate;
+    private javax.swing.JTable printTable;
+    private javax.swing.JLabel printTotalSum;
+    private javax.swing.JTextField printVat;
     private javax.swing.JTextField productID;
     private javax.swing.JTextField productIDAddBulk;
     private javax.swing.JTextField productIDAddSingle;
@@ -2260,6 +2696,7 @@ public class MainUI extends javax.swing.JFrame {
         AddBulkItemPane.setVisible(false);
         AddClient.setVisible(false);
         FavouriteClientPanel.setVisible(false);
+        PrintChalanPanel.setVisible(false);
         currentPanel.setVisible(true);
     }
 
@@ -2267,7 +2704,10 @@ public class MainUI extends javax.swing.JFrame {
         boolean isValid = false;
         for(char c : num.toCharArray())
             if(c < '0' || c > '9')
-                return isValid;
+            {
+                if(c != '.')
+                    return isValid;
+            }
         isValid = true;
         return isValid;
     }
@@ -2390,4 +2830,14 @@ public class MainUI extends javax.swing.JFrame {
         }
         
     }
+
+    private void setdate(JTextField printDate) {
+         Date today = new Date();
+         SimpleDateFormat parseFormat = new SimpleDateFormat("EEE  MMM-dd-yyyy");
+         String date = parseFormat.format(today);
+         printDate.setText(date);
+         System.out.println(date);
+    }
+    
+    
 }

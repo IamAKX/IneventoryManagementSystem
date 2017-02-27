@@ -25,18 +25,18 @@ public class SendRequest {
         this.progressBar = progressBar;
         this.map = map;
         this.url = url;
+        progressBar.setIndeterminate(true);
     }
 
     
     public String serverResponse()
     {
         label.setText("Resquesting server...");
-        progressBar.setValue(1);
         String result = "";
         try {
             HttpUtility.sendPostRequest(url, map);
             label.setText("Fetching response...");
-            progressBar.setValue(50);
+            
             String[] response = HttpUtility.readMultipleLinesRespone();
             for (String line : response) {
                 result += line;
@@ -46,7 +46,7 @@ public class SendRequest {
         }
         HttpUtility.disconnect();
         label.setText("Saved successfully...");
-        progressBar.setValue(100);
+        progressBar.setIndeterminate(false);
         return result;
     }
     

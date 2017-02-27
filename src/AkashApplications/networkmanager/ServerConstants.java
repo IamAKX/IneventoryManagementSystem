@@ -16,6 +16,7 @@ public class ServerConstants {
     public static final String ADD_PRODUCT = BASE_URL + "AddStock.php";
     public static final String UPDATE_PRODUCT = BASE_URL + "UpdateStock.php";
     public static final String SEARCH_PRODUCT = BASE_URL + "SearchStock.php";
+    public static final String GET_PRODUCT = BASE_URL + "GetProduct.php";
     
     public static final String SAVE_CLIENT = BASE_URL + "AddClient.php";
     public static final String DELETE_CLIENT = BASE_URL + "DeleteClient.php";
