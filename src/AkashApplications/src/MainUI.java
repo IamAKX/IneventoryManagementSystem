@@ -70,9 +70,9 @@ public class MainUI extends javax.swing.JFrame {
         FavouriteClientTable.getColumnModel().getColumn(5).setMinWidth(0);
         FavouriteClientTable.getColumnModel().getColumn(5).setPreferredWidth(0);
         
-        printTable.getColumnModel().getColumn(6).setMaxWidth(0);
-        printTable.getColumnModel().getColumn(6).setMinWidth(0);
-        printTable.getColumnModel().getColumn(6).setPreferredWidth(0);
+        printTable.getColumnModel().getColumn(5).setMaxWidth(0);
+        printTable.getColumnModel().getColumn(5).setMinWidth(0);
+        printTable.getColumnModel().getColumn(5).setPreferredWidth(0);
         printTable.getColumnModel().getColumn(0).setPreferredWidth(30);
         printTable.getColumnModel().getColumn(1).setPreferredWidth(320);
         
@@ -113,16 +113,10 @@ public class MainUI extends javax.swing.JFrame {
         FavouriteClientTable.setComponentPopupMenu(popupMenu1);
         
         setdate(printDate);
-        try {
-            printInvoiceNote.setText(String.format("%06d", new InvoiceNoteManager().getProperty()));
-        } catch (IOException ex) {
-            Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+        printInvoiceNote.setText(setDeliveryNote());
         
         setTitle(TITLE+" - Stock");
         
-     
     }
     
     
@@ -141,9 +135,6 @@ public class MainUI extends javax.swing.JFrame {
         printBuyerDetail = new javax.swing.JTextArea();
         printInvoiceNote = new javax.swing.JLabel();
         printDate = new javax.swing.JTextField();
-        jScrollPane7 = new javax.swing.JScrollPane();
-        printDeliveryTerms = new javax.swing.JTextArea();
-        jLabel30 = new javax.swing.JLabel();
         jLabel31 = new javax.swing.JLabel();
         printProductId = new javax.swing.JTextField();
         jLabel32 = new javax.swing.JLabel();
@@ -154,11 +145,11 @@ public class MainUI extends javax.swing.JFrame {
         jScrollPane8 = new javax.swing.JScrollPane();
         printTable = new javax.swing.JTable();
         jLabel29 = new javax.swing.JLabel();
-        printVat = new javax.swing.JTextField();
         printPrintBtn = new javax.swing.JButton();
         jLabel28 = new javax.swing.JLabel();
         printTotalSum = new javax.swing.JLabel();
         jLabel34 = new javax.swing.JLabel();
+        paymentType = new javax.swing.JComboBox<>();
         StockPane = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         productID = new javax.swing.JTextField();
@@ -285,12 +276,6 @@ public class MainUI extends javax.swing.JFrame {
 
         printInvoiceNote.setText("00000");
 
-        printDeliveryTerms.setColumns(20);
-        printDeliveryTerms.setRows(5);
-        jScrollPane7.setViewportView(printDeliveryTerms);
-
-        jLabel30.setText("Delivery terms");
-
         jLabel31.setText("Product ID");
 
         printProductId.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -307,7 +292,7 @@ public class MainUI extends javax.swing.JFrame {
             }
         });
 
-        jLabel33.setText("Rate per sq. m");
+        jLabel33.setText("Rate per sheet");
 
         printRate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -333,11 +318,11 @@ public class MainUI extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Sl. No.", "Description of Good", "VAT %", "Rate per sq. m", "Qty", "Amount", "productId"
+                "Sl. No.", "Description of Good", "Rate per sheet", "Qty", "Amount", "productId"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -350,19 +335,7 @@ public class MainUI extends javax.swing.JFrame {
             printTable.getColumnModel().getColumn(0).setPreferredWidth(10);
         }
 
-        jLabel29.setText("VAT %");
-
-        printVat.setText("0");
-        printVat.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                printVatActionPerformed(evt);
-            }
-        });
-        printVat.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                printVatKeyReleased(evt);
-            }
-        });
+        jLabel29.setText("Payment method");
 
         printPrintBtn.setText("Print");
         printPrintBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -377,7 +350,9 @@ public class MainUI extends javax.swing.JFrame {
         printTotalSum.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
         printTotalSum.setText("0.00");
 
-        jLabel34.setText("Invoice Note : ");
+        jLabel34.setText("Delivery Note : ");
+
+        paymentType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "cash", "credit" }));
 
         javax.swing.GroupLayout PrintChalanPanelLayout = new javax.swing.GroupLayout(PrintChalanPanel);
         PrintChalanPanel.setLayout(PrintChalanPanelLayout);
@@ -398,34 +373,33 @@ public class MainUI extends javax.swing.JFrame {
                                 .addComponent(jLabel25)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(PrintChalanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PrintChalanPanelLayout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addComponent(printDate, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(PrintChalanPanelLayout.createSequentialGroup()
-                                        .addComponent(jLabel34, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGap(0, 0, 0)
-                                        .addComponent(printInvoiceNote, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(PrintChalanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jLabel34, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabel29, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(printDate, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(PrintChalanPanelLayout.createSequentialGroup()
-                                        .addComponent(jLabel30, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, PrintChalanPanelLayout.createSequentialGroup()
+                                        .addGroup(PrintChalanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(paymentType, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(printInvoiceNote, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addGroup(PrintChalanPanelLayout.createSequentialGroup()
+                                .addGap(56, 56, 56)
                                 .addComponent(jLabel31)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(printProductId, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(printProductId, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
                                 .addComponent(jLabel32)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(printQty)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(printQty, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(82, 82, 82)
                                 .addComponent(jLabel33)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(printRate, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel29)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(printVat, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(printRate, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(24, 24, 24))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PrintChalanPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -440,31 +414,33 @@ public class MainUI extends javax.swing.JFrame {
             PrintChalanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PrintChalanPanelLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addGroup(PrintChalanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(PrintChalanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(PrintChalanPanelLayout.createSequentialGroup()
-                        .addGroup(PrintChalanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(PrintChalanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(printDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel25))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(PrintChalanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(printInvoiceNote)
                             .addComponent(jLabel34))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(PrintChalanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel30)
-                            .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jLabel25)
-                    .addComponent(jScrollPane6))
-                .addGap(32, 32, 32)
+                        .addGroup(PrintChalanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel29)
+                            .addComponent(paymentType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(PrintChalanPanelLayout.createSequentialGroup()
+                        .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
+                        .addGap(32, 32, 32)))
                 .addGroup(PrintChalanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(printProductId, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel32)
                     .addComponent(printQty, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel33)
                     .addComponent(printRate, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel31)
-                    .addComponent(jLabel29)
-                    .addComponent(printVat, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(printAddBtn)
+                    .addComponent(jLabel31))
                 .addGap(18, 18, 18)
+                .addComponent(printAddBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(PrintChalanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2435,9 +2411,6 @@ public class MainUI extends javax.swing.JFrame {
             if(!validateNumberInput(printRate.getText().trim()))
                 JOptionPane.showMessageDialog(null,"Enter valid Rate per square meter","Alert",JOptionPane.WARNING_MESSAGE);
         else
-            if(!validateNumberInput(printVat.getText().trim()))
-                JOptionPane.showMessageDialog(null,"Enter valid VAT rate","Alert",JOptionPane.WARNING_MESSAGE);
-        else
             {
                 HashMap<String,String> map = new HashMap<>();
                 map.put("pid",printProductId.getText());
@@ -2452,10 +2425,8 @@ public class MainUI extends javax.swing.JFrame {
                     df.setMaximumFractionDigits(2);
                     DefaultTableModel dtm = (DefaultTableModel) printTable.getModel(); 
                     float amt = Float.parseFloat(printQty.getText()) * Float.parseFloat(printRate.getText());
-                    float vat = Float.parseFloat(printVat.getText()) * amt / 100;
-                    amt += vat;
                     String amount = df.format(amt);
-                    Object[] row = {String.valueOf(dtm.getRowCount()+1), model.getDesign()+" ("+model.getTexture()+")", printVat.getText() , printRate.getText(), printQty.getText(),amount,model.getPid()};
+                    Object[] row = {String.valueOf(dtm.getRowCount()+1), model.getDesign()+" ("+model.getTexture()+")", printRate.getText(), printQty.getText(),amount,model.getPid()};
                     dtm.addRow(row);
                     amt += Float.parseFloat(printTotalSum.getText().replace(",", ""));
                     amount = df.format(amt);
@@ -2465,7 +2436,6 @@ public class MainUI extends javax.swing.JFrame {
                     
                     printProductId.setText("");
                     printRate.setText("");
-                    printVat.setText("0");
                     printQty.setText("");
                 }
             }
@@ -2473,43 +2443,32 @@ public class MainUI extends javax.swing.JFrame {
             
     }//GEN-LAST:event_printAddBtnActionPerformed
 
-    private void printVatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printVatActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_printVatActionPerformed
-
     private void printProductIdKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_printProductIdKeyReleased
         // TODO add your handling code here:
-        if(printProductId.getText().isEmpty() || printVat.getText().isEmpty() || printRate.getText().isEmpty() || printQty.getText().isEmpty())
+        if(printProductId.getText().isEmpty() || printRate.getText().isEmpty() || printQty.getText().isEmpty())
             printAddBtn.setEnabled(false);
         else
             printAddBtn.setEnabled(true);
     }//GEN-LAST:event_printProductIdKeyReleased
 
     private void printQtyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_printQtyKeyReleased
-        if(printProductId.getText().isEmpty() || printVat.getText().isEmpty() || printRate.getText().isEmpty() || printQty.getText().isEmpty())
+        if(printProductId.getText().isEmpty() || printRate.getText().isEmpty() || printQty.getText().isEmpty())
             printAddBtn.setEnabled(false);
         else
             printAddBtn.setEnabled(true);
     }//GEN-LAST:event_printQtyKeyReleased
 
     private void printRateKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_printRateKeyReleased
-        if(printProductId.getText().isEmpty() || printVat.getText().isEmpty() || printRate.getText().isEmpty() || printQty.getText().isEmpty())
+        if(printProductId.getText().isEmpty() || printRate.getText().isEmpty() || printQty.getText().isEmpty())
             printAddBtn.setEnabled(false);
         else
             printAddBtn.setEnabled(true);
     }//GEN-LAST:event_printRateKeyReleased
 
-    private void printVatKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_printVatKeyReleased
-        if(printProductId.getText().isEmpty() || printVat.getText().isEmpty() || printRate.getText().isEmpty() || printQty.getText().isEmpty())
-            printAddBtn.setEnabled(false);
-        else
-            printAddBtn.setEnabled(true);
-    }//GEN-LAST:event_printVatKeyReleased
-
     private void printPrintBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printPrintBtnActionPerformed
         try {
             // TODO add your handling code here:
-            new GenerateInvoice(printBuyerDetail.getText(),printInvoiceNote.getText(), printDate.getText(), printDeliveryTerms.getText(), printTotalSum.getText(), printTable).printInvoice();
+            new GenerateInvoice(printBuyerDetail.getText(),printInvoiceNote.getText(), printDate.getText(), printTotalSum.getText(), printTable,paymentType.getSelectedItem().toString()).printInvoice();
         } catch (InvalidFormatException ex) {
             Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -2614,7 +2573,6 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
@@ -2646,15 +2604,14 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JProgressBar mainUiProgress;
     private javax.swing.JLabel mainUiProgressReport;
+    private javax.swing.JComboBox<String> paymentType;
     private javax.swing.JButton printAddBtn;
     private javax.swing.JTextArea printBuyerDetail;
     private javax.swing.JTextField printDate;
-    private javax.swing.JTextArea printDeliveryTerms;
     private javax.swing.JLabel printInvoiceNote;
     private javax.swing.JButton printPrintBtn;
     private javax.swing.JTextField printProductId;
@@ -2662,7 +2619,6 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JTextField printRate;
     private javax.swing.JTable printTable;
     private javax.swing.JLabel printTotalSum;
-    private javax.swing.JTextField printVat;
     private javax.swing.JTextField productID;
     private javax.swing.JTextField productIDAddBulk;
     private javax.swing.JTextField productIDAddSingle;
@@ -2833,11 +2789,25 @@ public class MainUI extends javax.swing.JFrame {
 
     private void setdate(JTextField printDate) {
          Date today = new Date();
-         SimpleDateFormat parseFormat = new SimpleDateFormat("EEE  MMM-dd-yyyy");
+         SimpleDateFormat parseFormat = new SimpleDateFormat("dd-mm-yyyy (EEEE)");
          String date = parseFormat.format(today);
          printDate.setText(date);
          System.out.println(date);
     }
+    
+    private String setDeliveryNote()
+    {
+        Date today = new Date();
+         SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy");
+         String date = parseFormat.format(today);
+        String s = "PM/";
+        try {
+            s += new InvoiceNoteManager().getProperty()+"/";
+        } catch (IOException ex) {
+            Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return s+date;
+    }    
     
     
 }

@@ -42,18 +42,21 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
  * @author akash
  */
 public class GenerateInvoice {
-    String buyerAddress, invoiceNote, date, deliveryTerm, totalSum;
+    String buyerAddress, invoiceNote, date, totalSum,paymentType;
     JTable table;
     DefaultTableModel dtm;
-    public GenerateInvoice(String buyerAddress, String invoiceNote, String date, String deliveryTerm, String totalSum, JTable table) {
+
+    public GenerateInvoice(String buyerAddress, String invoiceNote, String date, String totalSum, JTable table, String paymentType) {
         this.buyerAddress = buyerAddress;
         this.invoiceNote = invoiceNote;
         this.date = date;
-        this.deliveryTerm = deliveryTerm;
+
         this.totalSum = totalSum;
+        this.paymentType = paymentType;
         this.table = table;
         dtm = (DefaultTableModel) table.getModel();
     }
+    
     
     public boolean printInvoice() throws FileNotFoundException, InvalidFormatException, IOException
     {
@@ -66,10 +69,19 @@ public class GenerateInvoice {
         pageMar.setRight(BigInteger.valueOf(720L));
         pageMar.setBottom(BigInteger.valueOf(460L));
         
+        XWPFParagraph dateP = document.createParagraph();
+        XWPFRun dateRun = dateP.createRun();
+        dateRun.addBreak();
+        dateRun.setText(date);
+        dateRun.setFontSize(8);
+        dateRun.setItalic(true);
+        dateP.setAlignment(ParagraphAlignment.RIGHT);
+        dateRun.addBreak();
+        
         XWPFParagraph title = document.createParagraph();
         XWPFRun titleRun = title.createRun();
         titleRun.addBreak();
-        titleRun.setText("Challan cum Tax Invoice");
+        titleRun.setText("Challan Delivery ");
         titleRun.setBold(true);
         title.setAlignment(ParagraphAlignment.CENTER);
         titleRun.addBreak();
@@ -97,20 +109,6 @@ public class GenerateInvoice {
         XWPFParagraph seller = cellSellerBuyer.addParagraph();
         XWPFRun sellerRun = seller.createRun();
         seller.setAlignment(ParagraphAlignment.LEFT);
-        sellerRun.setText("Seller:");
-        sellerRun.addBreak();
-        sellerRun.setText("<Name>");
-        sellerRun.addBreak();
-        sellerRun.setText("PLYWOOD MANOR");
-        sellerRun.addBreak();
-        sellerRun.setText("L.R. Plot No. 65, Mouza Karimpur,");
-        sellerRun.addBreak();
-        sellerRun.setText("Nazirabad Road, Near Ruby General Hospital,");
-        sellerRun.addBreak();
-        sellerRun.setText("Kolkata - 700150, India.");
-        sellerRun.addBreak();
-        sellerRun.addBreak();
-        sellerRun.addBreak();
         sellerRun.setText("Buyer:");
         sellerRun.addBreak();
         String[] ar = buyerAddress.split("\n");
@@ -135,43 +133,31 @@ public class GenerateInvoice {
         XWPFParagraph productDesc = cellProductDesc.addParagraph();
         productDesc.setAlignment(ParagraphAlignment.LEFT);
         XWPFRun runInvoice = productDesc.createRun();
-        runInvoice.setText("Invoice No.");
+        
+        
+//        if(table.getRowCount() == 1)
+//        {
+//            runInvoice.addTab();
+//            runInvoice.addTab();
+//            runInvoice.addTab();
+//            String imgLoc = "Barcodes/"+ dtm.getValueAt(0, 6) +".jpg";
+//            FileInputStream image = new FileInputStream(imgLoc);
+//            runInvoice.addPicture(image, XWPFDocument.PICTURE_TYPE_JPEG,imgLoc, Units.toEMU(200), Units.toEMU(50));
+//            runInvoice.addBreak();
+//            runInvoice.addBreak();
+//        }
+        
+        runInvoice.setText("Delivery Note");
         runInvoice.addTab();
         runInvoice.addTab();
         runInvoice.setText(invoiceNote);
         runInvoice.addBreak();
         runInvoice.addBreak();
         
-        if(table.getRowCount() == 1)
-        {
-            runInvoice.addTab();
-            runInvoice.addTab();
-            runInvoice.addTab();
-            String imgLoc = "Barcodes/"+ dtm.getValueAt(0, 6) +".jpg";
-            FileInputStream image = new FileInputStream(imgLoc);
-            runInvoice.addPicture(image, XWPFDocument.PICTURE_TYPE_JPEG,imgLoc, Units.toEMU(200), Units.toEMU(50));
-            runInvoice.addBreak();
-            runInvoice.addBreak();
-        }
-        
-        runInvoice.setText("Delivery Note");
-        runInvoice.addTab();
-        runInvoice.addTab();
-        runInvoice.setText(deliveryTerm);
-        runInvoice.addBreak();
-        runInvoice.addBreak();
-        runInvoice.setText("Date");
-        runInvoice.addTab();
-        runInvoice.addTab();
-        runInvoice.addTab();
-        runInvoice.setText(date);
-        runInvoice.addBreak();
-        runInvoice.addBreak();
-        
-        document.createParagraph().createRun().addBreak();
+        //document.createParagraph().createRun().addBreak();
         
         XWPFTable productDetails = document.createTable();
-        productDetails.setCellMargins(25,25,25,25);
+        productDetails.setCellMargins(50,50,50,50);
         //productDetails.getCTTbl().getTblPr().addNewJc().setVal(STJc.RIGHT);
         productDetails.getCTTbl().getTblPr().unsetTblBorders();
         productDetails.getCTTbl().addNewTblPr().addNewTblW().setW(BigInteger.valueOf(11000));
@@ -194,10 +180,10 @@ public class GenerateInvoice {
         
         
         XWPFTableCell header1 = pDetailHeader.createCell();
-        header1.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(4000));
+        header1.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(4700));
         XWPFParagraph headerText1 = header1.addParagraph();
         XWPFRun run1 = headerText1.createRun();
-        run1.setText("Description of Good");
+        run1.setText("Description of Goods");
         run1.setBold(true);
         ctTc = header1.getCTTc();
         tcPr = ctTc.addNewTcPr();
@@ -207,25 +193,11 @@ public class GenerateInvoice {
         border.addNewLeft().setVal(STBorder.SINGLE);
         border.addNewTop().setVal(STBorder.SINGLE); 
         
-        XWPFTableCell header2 = pDetailHeader.createCell();
-        header2.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(1000));
-        XWPFParagraph headerText2 = header2.addParagraph();
-        XWPFRun run2 = headerText2.createRun();
-        run2.setText("VAT %");
-        run2.setBold(true);
-        ctTc = header2.getCTTc();
-        tcPr = ctTc.addNewTcPr();
-        border = tcPr.addNewTcBorders();
-        border.addNewBottom().setVal(STBorder.SINGLE);
-        border.addNewRight().setVal(STBorder.SINGLE);
-        border.addNewLeft().setVal(STBorder.SINGLE);
-        border.addNewTop().setVal(STBorder.SINGLE); 
-        
         XWPFTableCell header3 = pDetailHeader.createCell();
-        header3.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(1900));
+        header3.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(2000));
         XWPFParagraph headerText3 = header3.addParagraph();
         XWPFRun run3 = headerText3.createRun();
-        run3.setText("Rate per sq. m");
+        run3.setText("Rate per sheet");
         run3.setBold(true);
         ctTc = header3.getCTTc();
         tcPr = ctTc.addNewTcPr();
@@ -236,7 +208,7 @@ public class GenerateInvoice {
         border.addNewTop().setVal(STBorder.SINGLE); 
         
         XWPFTableCell header4 = pDetailHeader.createCell();
-        header4.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(1000));
+        header4.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(1300));
         XWPFParagraph headerText4 = header4.addParagraph();
         XWPFRun run4 = headerText4.createRun();
         run4.setText("Qty");
@@ -265,7 +237,7 @@ public class GenerateInvoice {
   
        
         
-        for(int i=0; i<2; i++)
+        for(int i=0; i<1; i++)
         {
             XWPFTableRow fTableRow = productDetails.createRow();
             for(int j=0; j<6; j++)
@@ -292,20 +264,18 @@ public class GenerateInvoice {
                         cell.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(1000));
                         break;
                     case 1:
-                        cell.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(4000));
+                        cell.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(4700));
                         break;
                     case 2:
-                        cell.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(1000));
-                        break;
-                    case 3:
-                        cell.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(1900));
-                        break;
-                    case 4:
-                        cell.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(1000));
-                        break;
-                    case 5:
                         cell.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(2000));
                         break;
+                    case 3:
+                        cell.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(1300));
+                        break;
+                    case 4:
+                        cell.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(2000));
+                        break;
+                    
                 }
                 
             }
@@ -342,26 +312,23 @@ public class GenerateInvoice {
                         cell.setText(String.valueOf(dtm.getValueAt(i, j)));
                         break;
                     case 1:
-                        cell.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(4000));
+                        cell.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(4700));
                         cell.setText(String.valueOf(dtm.getValueAt(i, j)));
                         break;
                     case 2:
-                        cell.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(1000));
+                        cell.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(2000));
                         cell.setText(String.valueOf(dtm.getValueAt(i, j)));
                         break;
                     case 3:
-                        cell.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(1900));
-                        cell.setText(String.valueOf(dtm.getValueAt(i, j)));
-                        break;
-                    case 4:
                         totalQty += Integer.parseInt(String.valueOf(dtm.getValueAt(i, j)));
                         cell.setText(String.valueOf(dtm.getValueAt(i, j)));
-                        cell.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(1000));
+                        cell.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(1300));
                         break;
-                    case 5:
+                    case 4:
                         cell.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(2000));
                         cell.setText("Rs. "+String.valueOf(dtm.getValueAt(i, j)));
                         break;
+                    
                 }
                 
             }
@@ -372,26 +339,25 @@ public class GenerateInvoice {
         fc0.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(1000));
         
         XWPFTableCell fc1 = finalRow.getCell(1);
-        fc1.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(4000));
+        fc1.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(4700));
         
-        XWPFTableCell fc2 = finalRow.getCell(2);
-        fc2.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(1000));
         
-        XWPFTableCell fc3 = finalRow.getCell(3);
-        fc3.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(1900));
+        
+        XWPFTableCell fc3 = finalRow.getCell(2);
+        fc3.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(2000));
         XWPFParagraph fp1= fc3.addParagraph();
         XWPFRun fRun1 = fp1.createRun();
         fRun1.setBold(true);
         fRun1.setText("TOTAL");
         
-        XWPFTableCell fc4 = finalRow.getCell(4);
-        fc4.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(1000));
+        XWPFTableCell fc4 = finalRow.getCell(3);
+        fc4.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(1300));
         XWPFParagraph fp2= fc4.addParagraph();
         XWPFRun fRun2 = fp2.createRun();
         fRun2.setBold(true);
         fRun2.setText(String.valueOf(totalQty));
         
-        XWPFTableCell fc5 = finalRow.getCell(5);
+        XWPFTableCell fc5 = finalRow.getCell(4);
         fc5.getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(2000));
         XWPFParagraph fp3= fc5.addParagraph();
         XWPFRun fRun3 = fp3.createRun();
@@ -410,17 +376,11 @@ public class GenerateInvoice {
         tcPr = ctTc.getTcPr();
         border = tcPr.addNewTcBorders();
         //border.addNewBottom().setVal(STBorder.SINGLE);
-        //border.addNewRight().setVal(STBorder.SINGLE);
-//        border.addNewLeft().setVal(STBorder.SINGLE);
-        border.addNewTop().setVal(STBorder.SINGLE);
-       
-        ctTc = fc2.getCTTc();
-        tcPr = ctTc.getTcPr();
-        border = tcPr.addNewTcBorders();
-        //border.addNewBottom().setVal(STBorder.SINGLE);
         border.addNewRight().setVal(STBorder.SINGLE);
 //        border.addNewLeft().setVal(STBorder.SINGLE);
         border.addNewTop().setVal(STBorder.SINGLE);
+       
+        
         
         ctTc = fc3.getCTTc();
         tcPr = ctTc.getTcPr();
@@ -446,15 +406,28 @@ public class GenerateInvoice {
         border.addNewLeft().setVal(STBorder.SINGLE);
         border.addNewTop().setVal(STBorder.SINGLE); 
         
+        XWPFParagraph wordP = document.createParagraph();
+        XWPFRun wpRun = wordP.createRun();
+        wpRun.addBreak();
+        wpRun.addBreak();
+        wpRun.addBreak();
+        wpRun.setText("Amount in words");
+        
         XWPFParagraph netAMT = document.createParagraph();
         XWPFRun netAmtRun = netAMT.createRun();
-        netAmtRun.addBreak();
-        netAmtRun.addBreak();
-        netAmtRun.setItalic(true);
-        netAmtRun.setFontSize(10);
-        netAmtRun.setText("Net amount : "+ConvertMoneyToNumberMain.convert(totalSum.replace(",", "")));
+        netAmtRun.setBold(true);
+        netAmtRun.setText(ConvertMoneyToNumberMain.convert(totalSum.replace(",", "")));
+        
+        XWPFParagraph netPMethod = document.createParagraph();
+        XWPFRun pMethodRun = netPMethod.createRun();
+        pMethodRun.addBreak();
+        pMethodRun.addBreak();
+        pMethodRun.setItalic(true);
+        pMethodRun.setFontSize(10);
+        pMethodRun.setText("NB. - Good sold to the above buyer is in "+paymentType+".");
+        
         try{
-            FileOutputStream outputStream = new FileOutputStream("/home/akash/Desktop/Challan"+invoiceNote+".docx");
+            FileOutputStream outputStream = new FileOutputStream("/home/akash/Desktop/Challan"+invoiceNote.replace("/","_")+".docx");
             document.write(outputStream);
             outputStream.close();
             new InvoiceNoteManager().setProperty();
