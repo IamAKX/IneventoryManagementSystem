@@ -7,6 +7,7 @@ package AkashApplications.src;
 
 
 import AkashApplications.JsonParser.CustomJsonParser;
+import AkashApplications.downloadBarcode.HttpDownloadUtility;
 import AkashApplications.networkmanager.ClientAccess;
 import AkashApplications.networkmanager.SaveClient;
 import AkashApplications.networkmanager.SearchProduct;
@@ -116,7 +117,7 @@ public class MainUI extends javax.swing.JFrame {
         printInvoiceNote.setText(setDeliveryNote());
         
         setTitle(TITLE+" - Stock");
-        
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon.png")));
     }
     
     
@@ -256,7 +257,6 @@ public class MainUI extends javax.swing.JFrame {
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenuItem10 = new javax.swing.JMenuItem();
@@ -1470,6 +1470,11 @@ public class MainUI extends javax.swing.JFrame {
 
         jMenuItem5.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem5.setText("Download Barcodes");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem5);
 
         jMenuItem6.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
@@ -1484,6 +1489,11 @@ public class MainUI extends javax.swing.JFrame {
 
         jMenuItem7.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem7.setText("About");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem7);
 
         jMenuItem8.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
@@ -1534,10 +1544,6 @@ public class MainUI extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMenuItem2);
-
-        jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem4.setText("Sale Record");
-        jMenu2.add(jMenuItem4);
 
         jMenuBar1.add(jMenu2);
 
@@ -2476,6 +2482,27 @@ public class MainUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_printPrintBtnActionPerformed
 
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        
+        DownloadBarcode.runDownloadDialog();
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(null, "Inventory Management - Release v1.0.1\n" +
+                                            "Managing stocks and client for PLYWOOD MANOR\n" +
+                                            "\n" +
+                                            "- Feature (FEB 2017)\n" +
+                                            "\t\t    * Add/View Stock details\n" +
+                                            "\t\t    * Maintain client record\n" +
+                                            "\t\t    * Generate/Download product ID barcode\n" +
+                                            "\n" +
+                                            "- Designed and Developed by\n" +
+                                            "\t\t    AKASH GIRI\n" +
+                                            "\t\t    \u00a9 Akash Application\n" +
+                                            "\t\t    akx.sonu@gmail.com", "About", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -2592,7 +2619,6 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
@@ -2797,16 +2823,23 @@ public class MainUI extends javax.swing.JFrame {
     
     private String setDeliveryNote()
     {
-        Date today = new Date();
-         SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy");
-         String date = parseFormat.format(today);
-        String s = "PM/";
+//        Date today = new Date();
+//         SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy");
+//         String date = parseFormat.format(today);
+//        String s = "PM/";
+//        try {
+//            s += new InvoiceNoteManager().getProperty()+"/";
+//        } catch (IOException ex) {
+//            Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return s+date;
+        String s= "";
         try {
-            s += new InvoiceNoteManager().getProperty()+"/";
+            s += new InvoiceNoteManager().getProperty();
         } catch (IOException ex) {
             Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return s+date;
+        return s;
     }    
     
     

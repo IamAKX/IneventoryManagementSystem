@@ -22,4 +22,7 @@ public class ServerConstants {
     public static final String DELETE_CLIENT = BASE_URL + "DeleteClient.php";
     public static final String UPDATE_CLIENT = BASE_URL + "UpdateClient.php";
     public static final String FETCH_CLIENT = BASE_URL + "FetchClient.php";
+    
+    public static final String DOWNLOAD_BARCODE = BASE_URL + "Compress.php";
+    
 }

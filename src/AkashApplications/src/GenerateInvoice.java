@@ -81,7 +81,7 @@ public class GenerateInvoice {
         XWPFParagraph title = document.createParagraph();
         XWPFRun titleRun = title.createRun();
         titleRun.addBreak();
-        titleRun.setText("Challan Delivery ");
+        titleRun.setText("Delivery Challan");
         titleRun.setBold(true);
         title.setAlignment(ParagraphAlignment.CENTER);
         titleRun.addBreak();
@@ -109,7 +109,7 @@ public class GenerateInvoice {
         XWPFParagraph seller = cellSellerBuyer.addParagraph();
         XWPFRun sellerRun = seller.createRun();
         seller.setAlignment(ParagraphAlignment.LEFT);
-        sellerRun.setText("Buyer:");
+        sellerRun.setText("Buyer :");
         sellerRun.addBreak();
         String[] ar = buyerAddress.split("\n");
         for(String s : ar)
@@ -147,13 +147,17 @@ public class GenerateInvoice {
 //            runInvoice.addBreak();
 //        }
         
-        runInvoice.setText("Delivery Note");
-        runInvoice.addTab();
+        runInvoice.setText("Delivery Note : ");
         runInvoice.addTab();
         runInvoice.setText(invoiceNote);
         runInvoice.addBreak();
         runInvoice.addBreak();
-        
+        runInvoice.addBreak();
+        runInvoice.setText("Date : ");
+        runInvoice.addTab();
+        runInvoice.setText(date);
+        runInvoice.addBreak();
+        runInvoice.addBreak();
         //document.createParagraph().createRun().addBreak();
         
         XWPFTable productDetails = document.createTable();
@@ -367,16 +371,16 @@ public class GenerateInvoice {
         ctTc = fc0.getCTTc();
         tcPr = ctTc.getTcPr();
         border = tcPr.addNewTcBorders();
-        //border.addNewBottom().setVal(STBorder.SINGLE);
+        border.addNewBottom().setVal(STBorder.SINGLE);
         //border.addNewRight().setVal(STBorder.SINGLE);
-//        border.addNewLeft().setVal(STBorder.SINGLE);
+         border.addNewLeft().setVal(STBorder.SINGLE);
          border.addNewTop().setVal(STBorder.SINGLE);
         
         ctTc = fc1.getCTTc();
         tcPr = ctTc.getTcPr();
         border = tcPr.addNewTcBorders();
-        //border.addNewBottom().setVal(STBorder.SINGLE);
-        border.addNewRight().setVal(STBorder.SINGLE);
+        border.addNewBottom().setVal(STBorder.SINGLE);
+        //border.addNewRight().setVal(STBorder.SINGLE);
 //        border.addNewLeft().setVal(STBorder.SINGLE);
         border.addNewTop().setVal(STBorder.SINGLE);
        
@@ -387,7 +391,7 @@ public class GenerateInvoice {
         border = tcPr.addNewTcBorders();
         border.addNewBottom().setVal(STBorder.SINGLE);
         border.addNewRight().setVal(STBorder.SINGLE);
-        border.addNewLeft().setVal(STBorder.SINGLE);
+        //border.addNewLeft().setVal(STBorder.SINGLE);
         border.addNewTop().setVal(STBorder.SINGLE); 
         
         ctTc = fc4.getCTTc();
@@ -411,7 +415,7 @@ public class GenerateInvoice {
         wpRun.addBreak();
         wpRun.addBreak();
         wpRun.addBreak();
-        wpRun.setText("Amount in words");
+        wpRun.setText("Amount (In words) :");
         
         XWPFParagraph netAMT = document.createParagraph();
         XWPFRun netAmtRun = netAMT.createRun();
@@ -424,10 +428,16 @@ public class GenerateInvoice {
         pMethodRun.addBreak();
         pMethodRun.setItalic(true);
         pMethodRun.setFontSize(10);
-        pMethodRun.setText("NB. - Good sold to the above buyer is in "+paymentType+".");
+        pMethodRun.setText("NB. - Goods sold to the above buyer is in "+paymentType+".");
         
         try{
-            FileOutputStream outputStream = new FileOutputStream("/home/akash/Desktop/Challan"+invoiceNote.replace("/","_")+".docx");
+            String filePath = "Challan";
+            File f = new File(filePath);
+            if(!f.exists())
+            {
+                f.mkdir();
+            }
+            FileOutputStream outputStream = new FileOutputStream(filePath + File.separator + "/Challan"+invoiceNote.replace("/","_")+".docx");
             document.write(outputStream);
             outputStream.close();
             new InvoiceNoteManager().setProperty();
