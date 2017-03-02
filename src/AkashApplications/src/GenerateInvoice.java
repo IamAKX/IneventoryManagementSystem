@@ -5,6 +5,7 @@
  */
 package AkashApplications.src;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -45,7 +46,8 @@ public class GenerateInvoice {
     String buyerAddress, invoiceNote, date, totalSum,paymentType;
     JTable table;
     DefaultTableModel dtm;
-
+    String filePath = "Challan";
+    
     public GenerateInvoice(String buyerAddress, String invoiceNote, String date, String totalSum, JTable table, String paymentType) {
         this.buyerAddress = buyerAddress;
         this.invoiceNote = invoiceNote;
@@ -431,13 +433,13 @@ public class GenerateInvoice {
         pMethodRun.setText("NB. - Goods sold to the above buyer is in "+paymentType+".");
         
         try{
-            String filePath = "Challan";
+            
             File f = new File(filePath);
             if(!f.exists())
             {
                 f.mkdir();
             }
-            FileOutputStream outputStream = new FileOutputStream(filePath + File.separator + "/Challan"+invoiceNote.replace("/","_")+".docx");
+            FileOutputStream outputStream = new FileOutputStream(filePath + File.separator + "Challan"+invoiceNote.replace("/","_")+".docx");
             document.write(outputStream);
             outputStream.close();
             new InvoiceNoteManager().setProperty();
@@ -445,14 +447,18 @@ public class GenerateInvoice {
         }
         catch(Exception e)
         {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
         
         return true;
     }
 
     private void printDocument() {
-       
-        
+        try {
+            Desktop desktop = Desktop.getDesktop();
+            desktop.print(new File(filePath + File.separator + "Challan"+invoiceNote.replace("/","_")+".docx"));
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null,ex.getMessage(),"Printing Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }

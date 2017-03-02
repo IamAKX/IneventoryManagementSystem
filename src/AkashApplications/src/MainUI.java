@@ -35,6 +35,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -151,6 +152,7 @@ public class MainUI extends javax.swing.JFrame {
         printTotalSum = new javax.swing.JLabel();
         jLabel34 = new javax.swing.JLabel();
         paymentType = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
         StockPane = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         productID = new javax.swing.JTextField();
@@ -354,6 +356,13 @@ public class MainUI extends javax.swing.JFrame {
 
         paymentType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "cash", "credit" }));
 
+        jButton1.setText("Reset");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout PrintChalanPanelLayout = new javax.swing.GroupLayout(PrintChalanPanel);
         PrintChalanPanel.setLayout(PrintChalanPanelLayout);
         PrintChalanPanelLayout.setHorizontalGroup(
@@ -368,6 +377,8 @@ public class MainUI extends javax.swing.JFrame {
                         .addGroup(PrintChalanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(PrintChalanPanelLayout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(26, 26, 26)
                                 .addComponent(printAddBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, PrintChalanPanelLayout.createSequentialGroup()
                                 .addComponent(jLabel25)
@@ -439,7 +450,9 @@ public class MainUI extends javax.swing.JFrame {
                     .addComponent(printRate, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel31))
                 .addGap(18, 18, 18)
-                .addComponent(printAddBtn)
+                .addGroup(PrintChalanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(printAddBtn)
+                    .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
@@ -2503,6 +2516,11 @@ public class MainUI extends javax.swing.JFrame {
                                             "\t\t    akx.sonu@gmail.com", "About", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+            resetTable(printTable);
+            printTotalSum.setText("0.00");
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -2577,6 +2595,7 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JTextField designNameSSummary;
     private javax.swing.JButton editUpdateBtn;
     private javax.swing.JButton generateBarcodeAddSingle;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -2841,6 +2860,19 @@ public class MainUI extends javax.swing.JFrame {
         }
         return s;
     }    
+
+    private void resetTable(JTable printTable) {
+        DefaultTableModel tableModel = (DefaultTableModel) printTable.getModel();
+        int i = 0;
+        
+        while(tableModel.getRowCount() > 0)
+        {
+            for(i = 0; i < tableModel.getRowCount(); i++)
+            {
+                tableModel.removeRow(i);
+            }
+        }
+    }
     
     
 }
