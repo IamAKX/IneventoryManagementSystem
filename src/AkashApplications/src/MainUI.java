@@ -37,6 +37,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.omg.CORBA.ServerRequest;
@@ -55,7 +56,8 @@ public class MainUI extends javax.swing.JFrame {
         initComponents();
         
         setPanelVisibility(StockPane);
-       
+        setProgressBarVisibility();
+        
         BulkItemTable.getColumnModel().getColumn(6).setMaxWidth(0);
         BulkItemTable.getColumnModel().getColumn(6).setMinWidth(0);
         BulkItemTable.getColumnModel().getColumn(6).setPreferredWidth(0);
@@ -72,9 +74,9 @@ public class MainUI extends javax.swing.JFrame {
         FavouriteClientTable.getColumnModel().getColumn(5).setMinWidth(0);
         FavouriteClientTable.getColumnModel().getColumn(5).setPreferredWidth(0);
         
-        printTable.getColumnModel().getColumn(5).setMaxWidth(0);
-        printTable.getColumnModel().getColumn(5).setMinWidth(0);
-        printTable.getColumnModel().getColumn(5).setPreferredWidth(0);
+        printTable.getColumnModel().getColumn(3).setMaxWidth(0);
+        printTable.getColumnModel().getColumn(3).setMinWidth(0);
+        printTable.getColumnModel().getColumn(3).setPreferredWidth(0);
         printTable.getColumnModel().getColumn(0).setPreferredWidth(30);
         printTable.getColumnModel().getColumn(1).setPreferredWidth(320);
         
@@ -114,6 +116,30 @@ public class MainUI extends javax.swing.JFrame {
         popupMenu1.add(copyItem1);
         FavouriteClientTable.setComponentPopupMenu(popupMenu1);
         
+        
+        
+        JPopupMenu popupMenudelete = new JPopupMenu();
+        JMenuItem deleteItem = new JMenuItem("Delete");
+        deleteItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DefaultTableModel dtm = (DefaultTableModel)StockSummaryTable.getModel();
+                int row = StockSummaryTable.getSelectedRow();
+                String pid = (String) dtm.getValueAt(row, 1);
+                HashMap<String,String> hashMap = new HashMap<>();
+                hashMap.put("id",pid);
+                String reply = new SendBulkRequest(hashMap, ServerConstants.DELETE_STOCK).serverResponse();
+                CustomJsonParser cjp = new CustomJsonParser(reply);
+                if(cjp.getStatus())
+                    new ViewAllSummaryProgress().execute();
+                else
+                    JOptionPane.showMessageDialog(null, cjp.getReason(),"Error",JOptionPane.ERROR_MESSAGE);
+            }
+        });
+        popupMenudelete.add(deleteItem);
+        StockSummaryTable.setComponentPopupMenu(popupMenudelete);
+        
+        
         setdate(printDate);
         printInvoiceNote.setText(setDeliveryNote());
         
@@ -141,15 +167,11 @@ public class MainUI extends javax.swing.JFrame {
         printProductId = new javax.swing.JTextField();
         jLabel32 = new javax.swing.JLabel();
         printQty = new javax.swing.JTextField();
-        jLabel33 = new javax.swing.JLabel();
-        printRate = new javax.swing.JTextField();
         printAddBtn = new javax.swing.JButton();
         jScrollPane8 = new javax.swing.JScrollPane();
         printTable = new javax.swing.JTable();
         jLabel29 = new javax.swing.JLabel();
         printPrintBtn = new javax.swing.JButton();
-        jLabel28 = new javax.swing.JLabel();
-        printTotalSum = new javax.swing.JLabel();
         jLabel34 = new javax.swing.JLabel();
         paymentType = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
@@ -286,24 +308,11 @@ public class MainUI extends javax.swing.JFrame {
             }
         });
 
-        jLabel32.setText("Qty");
+        jLabel32.setText("Quantity");
 
         printQty.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 printQtyKeyReleased(evt);
-            }
-        });
-
-        jLabel33.setText("Rate per sheet");
-
-        printRate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                printRateActionPerformed(evt);
-            }
-        });
-        printRate.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                printRateKeyReleased(evt);
             }
         });
 
@@ -320,11 +329,11 @@ public class MainUI extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Sl. No.", "Description of Good", "Rate per sheet", "Qty", "Amount", "productId"
+                "Sl. No.", "Description of Good", "Qty", "productId"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -345,12 +354,6 @@ public class MainUI extends javax.swing.JFrame {
                 printPrintBtnActionPerformed(evt);
             }
         });
-
-        jLabel28.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
-        jLabel28.setText("Total =  Rs.");
-
-        printTotalSum.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
-        printTotalSum.setText("0.00");
 
         jLabel34.setText("Delivery Note : ");
 
@@ -376,11 +379,6 @@ public class MainUI extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PrintChalanPanelLayout.createSequentialGroup()
                         .addGroup(PrintChalanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(PrintChalanPanelLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(26, 26, 26)
-                                .addComponent(printAddBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, PrintChalanPanelLayout.createSequentialGroup()
                                 .addComponent(jLabel25)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -403,21 +401,17 @@ public class MainUI extends javax.swing.JFrame {
                                 .addComponent(jLabel31)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(printProductId, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
                                 .addComponent(jLabel32)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(printQty, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(82, 82, 82)
-                                .addComponent(jLabel33)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(printRate, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(66, 66, 66)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(26, 26, 26)
+                                .addComponent(printAddBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(24, 24, 24))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PrintChalanPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel28)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(printTotalSum, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(97, 97, 97)
                 .addComponent(printPrintBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
         );
@@ -440,27 +434,19 @@ public class MainUI extends javax.swing.JFrame {
                             .addComponent(paymentType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(PrintChalanPanelLayout.createSequentialGroup()
-                        .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
+                        .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
                         .addGap(32, 32, 32)))
                 .addGroup(PrintChalanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(printProductId, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel32)
                     .addComponent(printQty, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel33)
-                    .addComponent(printRate, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel31))
-                .addGap(18, 18, 18)
-                .addGroup(PrintChalanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel31)
                     .addComponent(printAddBtn)
                     .addComponent(jButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
+                .addGap(31, 31, 31)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(PrintChalanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(printTotalSum, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(PrintChalanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(printPrintBtn)
-                        .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(printPrintBtn)
                 .addGap(27, 27, 27))
         );
 
@@ -534,6 +520,8 @@ public class MainUI extends javax.swing.JFrame {
                 editUpdateBtnActionPerformed(evt);
             }
         });
+
+        mainUiProgress.setIndeterminate(true);
 
         mainUiProgressReport.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
         mainUiProgressReport.setVerticalAlignment(javax.swing.SwingConstants.TOP);
@@ -1045,6 +1033,8 @@ public class MainUI extends javax.swing.JFrame {
 
         jLabel12.setText("Stock Quantity");
 
+        AddSingleProgress.setIndeterminate(true);
+
         AddSingleProgressReport.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
         AddSingleProgressReport.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
@@ -1413,6 +1403,8 @@ public class MainUI extends javax.swing.JFrame {
         jScrollPane2.setViewportView(StockSummaryTable);
         StockSummaryTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
+        StockSummaryProgress.setIndeterminate(true);
+
         StockSummaryProgressReport.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
 
         viewAllBtnSSummary.setText("View All");
@@ -1607,7 +1599,7 @@ public class MainUI extends javax.swing.JFrame {
         if(evt.getKeyCode() == 10)
         {
             editUpdateBtn.setEnabled(true);
-            fetchSingleResult();
+            new FetchStockResult().execute();
         }
         else
             editUpdateBtn.setEnabled(false);
@@ -1743,7 +1735,7 @@ public class MainUI extends javax.swing.JFrame {
                     mainUiProgressReport.setText(parser.getReason());
                     
                     designName.setText("");
-                    fetchSingleResult();
+                    new FetchStockResult().execute();
                 }
                 else
                 {
@@ -1808,58 +1800,71 @@ public class MainUI extends javax.swing.JFrame {
     }//GEN-LAST:event_generateBarcodeAddSingleActionPerformed
 
     private void saveAddSingleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAddSingleActionPerformed
-        try {
-            // TODO add your handling code here:
-            
-            String pId = productIDAddSingle.getText();
-            String design = designNameAddSingle.getText();
-            String rack = rackNoAddSingle.getText();
-            String subRack = subRackNoAddSingle.getText();
-            String qty = qtyAddSingle.getText();
-            String texture = textureAddSingle.getText();
-            
-            
-            HashMap<String,String> map = new HashMap<String,String>();
-            map.put("pid",pId);
-            map.put("design",design);
-            map.put("rack",rack);
-            map.put("subrack",subRack);
-            map.put("texture",texture);
-            map.put("qty",qty);
-            map.put("barcode",GenerateBarcode.convertToBase64("Barcodes" + File.separator + pId+".jpg"));
-            String s = new SendRequest(AddSingleProgressReport,AddSingleProgress,map,ServerConstants.ADD_PRODUCT).serverResponse();
-            System.err.println(s);
-            CustomJsonParser parser = new CustomJsonParser(s);
-            if(parser.getStatus())
-            {
-                
-                AddSingleProgressReport.setText("");
-                
-                productIDAddSingle.setText("");
-                designNameAddSingle.setText("");
-                rackNoAddSingle.setText("");
-                subRackNoAddSingle.setText("");
-                qtyAddSingle.setText("");
-                textureAddSingle.setText("");
-                saveAddSingle.setEnabled(false);
-                barcodeAddSingle.setIcon(null);
-            }
-            else
-            {
-                
-                AddSingleProgressReport.setText(parser.getReason());
-            }
-            
-        } catch (Exception ex) {
-            Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        new AddSingleItemProgress().execute();
     }//GEN-LAST:event_saveAddSingleActionPerformed
 
+    class AddSingleItemProgress extends SwingWorker<Integer, String>
+    {
+
+        @Override
+        protected Integer doInBackground() throws Exception {
+            AddSingleProgress.setVisible(true);
+            
+                    try {
+                        // TODO add your handling code here:
+
+                        String pId = productIDAddSingle.getText();
+                        String design = designNameAddSingle.getText();
+                        String rack = rackNoAddSingle.getText();
+                        String subRack = subRackNoAddSingle.getText();
+                        String qty = qtyAddSingle.getText();
+                        String texture = textureAddSingle.getText();
+
+
+                        HashMap<String,String> map = new HashMap<String,String>();
+                        map.put("pid",pId);
+                        map.put("design",design);
+                        map.put("rack",rack);
+                        map.put("subrack",subRack);
+                        map.put("texture",texture);
+                        map.put("qty",qty);
+                        map.put("barcode",GenerateBarcode.convertToBase64("Barcodes" + File.separator + pId+".jpg"));
+                        String s = new SendRequest(AddSingleProgressReport,AddSingleProgress,map,ServerConstants.ADD_PRODUCT).serverResponse();
+                        System.err.println(s);
+                        CustomJsonParser parser = new CustomJsonParser(s);
+                        if(parser.getStatus())
+                        {
+
+                            AddSingleProgressReport.setText("");
+
+                            productIDAddSingle.setText("");
+                            designNameAddSingle.setText("");
+                            rackNoAddSingle.setText("");
+                            subRackNoAddSingle.setText("");
+                            qtyAddSingle.setText("");
+                            textureAddSingle.setText("");
+                            saveAddSingle.setEnabled(false);
+                            barcodeAddSingle.setIcon(null);
+                        }
+                        else
+                        {
+
+                            AddSingleProgressReport.setText(parser.getReason());
+                        }
+
+                    } catch (Exception ex) {
+                        Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+            
+            AddSingleProgress.setVisible(false);
+            return 0;
+        }
+        
+    }
+    
     private void addBtnAddBulkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnAddBulkActionPerformed
         // TODO add your handling code here:
         progressReportAddBulk.setText("Generating and saving barcode...");
-        ProgressTask pt = new ProgressTask(progressBarAddBulk);
-        pt.execute();
         
         String pId = productIDAddBulk.getText();
         String design = designNameAddBulk.getText();
@@ -1918,7 +1923,7 @@ public class MainUI extends javax.swing.JFrame {
             }
          }
         progressReportAddBulk.setText("");
-        pt.stopPrgress();
+        
     }//GEN-LAST:event_addBtnAddBulkActionPerformed
 
     private void textureAddSingleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textureAddSingleActionPerformed
@@ -1935,75 +1940,103 @@ public class MainUI extends javax.swing.JFrame {
 
     private void saveAllBtnAddBulkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAllBtnAddBulkActionPerformed
         // TODO add your handling code here:
-       ArrayList<ProductModel> list = new ArrayList<>();
-       ProgressTask pt = new ProgressTask(progressBarAddBulk);
-       pt.execute();
-       progressReportAddBulk.setText("Preparing Table");
-       for(int i=0; i<BulkItemTable.getRowCount(); i++)
-       {
-           try {
-               list.add(new ProductModel(String.valueOf(BulkItemTable.getValueAt(i, 0)),
-                       String.valueOf(BulkItemTable.getValueAt(i, 1)),
-                       String.valueOf(BulkItemTable.getValueAt(i, 2)),
-                       String.valueOf(BulkItemTable.getValueAt(i, 3)),
-                       String.valueOf(BulkItemTable.getValueAt(i, 4)),
-                       String.valueOf(BulkItemTable.getValueAt(i, 5)),
-                       String.valueOf(BulkItemTable.getValueAt(i, 6))));
-               
-               
-           } catch (Exception ex) {
-               System.err.println(ex.getMessage());
-           }
-       }
-       
-       progressReportAddBulk.setText("Requestings server...");
-       
-       for(int i = 0; i < list.size(); i++ )
-       {
-           try {
-       
-               ProductModel pm = list.get(i);
-               HashMap<String,String> map = new HashMap<>();
-               map.put("pid",pm.getPid());
-               map.put("design",pm.getDesign());
-               map.put("rack",pm.getRack());
-               map.put("subrack",pm.getSubrack());
-               map.put("texture",pm.getTexture());
-               map.put("qty",pm.getQty());
-               map.put("barcode",pm.getBarcode());
-               
-               String s = new SendBulkRequest(map,ServerConstants.ADD_PRODUCT).serverResponse();
-               CustomJsonParser jsonParser = new CustomJsonParser(s);
-               if(!jsonParser.getStatus())
-               {
-                   JOptionPane.showMessageDialog(null,"Request was rejected by server\n\nError : "+ jsonParser.getReason(),"Error",JOptionPane.ERROR_MESSAGE);
-                   break;
-               }
-           } catch (Exception ex) {
-               
-           }
-       }
-       DefaultTableModel tableModel = (DefaultTableModel) BulkItemTable.getModel();
-       while(tableModel.getRowCount() > 0)
-        {
-            for(int i = 0; i < tableModel.getRowCount(); i++)
-            {
-                tableModel.removeRow(i);
-            }
-        }
-    pt.stopPrgress();
-    progressReportAddBulk.setText("All products were saved successfully...");
+       new SaveAllBulkItemProgress().execute();
     }//GEN-LAST:event_saveAllBtnAddBulkActionPerformed
 
-    private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
-        //ProgressBarUpdate pbu = new ProgressBarUpdate(mainUiProgress);
-        //pbu.execute();
-        mainUiProgress.setIndeterminate(true);
-        fetchSingleResult();
-        mainUiProgress.setIndeterminate(false);
-        //pbu.stopProgress();
-    }//GEN-LAST:event_searchBtnActionPerformed
+    class SaveAllBulkItemProgress extends SwingWorker<Integer, String>
+    {
 
+        @Override
+        protected Integer doInBackground() throws Exception {
+            
+            ArrayList<ProductModel> list = new ArrayList<>();
+            progressBarAddBulk.setIndeterminate(true);
+            progressReportAddBulk.setText("Preparing Table");
+            for(int i=0; i<BulkItemTable.getRowCount(); i++)
+            {
+                try {
+                    list.add(new ProductModel(String.valueOf(BulkItemTable.getValueAt(i, 0)),
+                            String.valueOf(BulkItemTable.getValueAt(i, 1)),
+                            String.valueOf(BulkItemTable.getValueAt(i, 2)),
+                            String.valueOf(BulkItemTable.getValueAt(i, 3)),
+                            String.valueOf(BulkItemTable.getValueAt(i, 4)),
+                            String.valueOf(BulkItemTable.getValueAt(i, 5)),
+                            String.valueOf(BulkItemTable.getValueAt(i, 6))));
+
+
+                } catch (Exception ex) {
+                    System.err.println(ex.getMessage());
+                }
+            }
+            progressBarAddBulk.setIndeterminate(false);
+            progressReportAddBulk.setText("Requestings server...");
+            int length = list.size();
+            int interval = (int) Math.ceil(100/length);
+            for(int i = 0; i < length; i++ )
+            {
+                try {
+
+                    ProductModel pm = list.get(i);
+                    HashMap<String,String> map = new HashMap<>();
+                    map.put("pid",pm.getPid());
+                    map.put("design",pm.getDesign());
+                    map.put("rack",pm.getRack());
+                    map.put("subrack",pm.getSubrack());
+                    map.put("texture",pm.getTexture());
+                    map.put("qty",pm.getQty());
+                    map.put("barcode",pm.getBarcode());
+                    
+                    progressReportAddBulk.setText("Saving "+pm.getDesign()+"... ("+(i+1)+" of "+length+")");
+                    
+                    String s = new SendBulkRequest(map,ServerConstants.ADD_PRODUCT).serverResponse();
+                    CustomJsonParser jsonParser = new CustomJsonParser(s);
+                    progressBarAddBulk.setValue(progressBarAddBulk.getValue()+interval);
+                    System.err.println(jsonParser);
+                    if(!jsonParser.getStatus())
+                    {
+                        JOptionPane.showMessageDialog(null,"Request was rejected by server\n\nError : "+ jsonParser.getReason(),"Error",JOptionPane.ERROR_MESSAGE);
+                        break;
+                    }
+                } catch (Exception ex) {
+
+                }
+            }
+            progressBarAddBulk.setValue(100);
+            progressBarAddBulk.setValue(0);
+            DefaultTableModel tableModel = (DefaultTableModel) BulkItemTable.getModel();
+            while(tableModel.getRowCount() > 0)
+             {
+                 for(int i = 0; i < tableModel.getRowCount(); i++)
+                 {
+                     tableModel.removeRow(i);
+                 }
+             }
+
+             progressReportAddBulk.setText("All products were saved successfully...");
+            
+            
+            
+            return 0;
+        }
+        
+    }
+    
+    private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
+        new FetchStockResult().execute();
+    }//GEN-LAST:event_searchBtnActionPerformed
+    class FetchStockResult extends SwingWorker<Integer, String>
+    {
+
+        @Override
+        protected Integer doInBackground() throws Exception {
+            mainUiProgress.setVisible(true);
+            fetchSingleResult();
+            mainUiProgress.setVisible(false);
+            return 0;
+        }
+        
+    }
+    
     private void rackNoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_rackNoKeyTyped
         // TODO add your handling code here:
        
@@ -2015,91 +2048,115 @@ public class MainUI extends javax.swing.JFrame {
     }//GEN-LAST:event_rackNoInputMethodTextChanged
 
     private void searchBtnSSummaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnSSummaryActionPerformed
-        StockSummaryProgress.setIndeterminate(true);
-        String pID = productIDSSummary.getText().trim().equals("") ? " " : productIDSSummary.getText();
-        String design = designNameSSummary.getText().trim().equals("") ? " " : designNameSSummary.getText();
-        DefaultTableModel tableModel = (DefaultTableModel) StockSummaryTable.getModel();
-        ArrayList<ProductModel> list = new ArrayList<>();
-        int i = 0;
-        while(tableModel.getRowCount() > 0)
-        {
-            for(i = 0; i < tableModel.getRowCount(); i++)
-            {
-                tableModel.removeRow(i);
-            }
-        }
-        
-        HashMap<String,String> map = new HashMap<>();
-        map.put("pid", pID);
-        map.put("design", design);
-        
-        list = new SearchProduct(map, ServerConstants.SEARCH_PRODUCT).allResult();
-        if(list.size() > 0)
-        {
-            i = 0;
-            while(i < list.size())
-            {
-                tableModel.insertRow(i, new Object[]{
-                                    String.valueOf(i+1),
-                                    list.get(i).getPid(),
-                                    list.get(i).getDesign(),
-                                    list.get(i).getRack(),
-                                    list.get(i).getSubrack(),
-                                    list.get(i).getTexture(),
-                                    list.get(i).getQty()
-                                    });
-                i++;
-            }
-        }
-        else
-        {
-            JOptionPane.showMessageDialog(null, "Failed to fetch product", "Information", JOptionPane.INFORMATION_MESSAGE);
-        }
-        StockSummaryProgress.setIndeterminate(false);
+        new SearchStockProgress().execute();
     }//GEN-LAST:event_searchBtnSSummaryActionPerformed
 
+    class SearchStockProgress extends SwingWorker<Integer, String>
+    {
+
+        @Override
+        protected Integer doInBackground() throws Exception {
+            StockSummaryProgress.setVisible(true);
+            String pID = productIDSSummary.getText().trim().equals("") ? " " : productIDSSummary.getText();
+            String design = designNameSSummary.getText().trim().equals("") ? " " : designNameSSummary.getText();
+            DefaultTableModel tableModel = (DefaultTableModel) StockSummaryTable.getModel();
+            ArrayList<ProductModel> list = new ArrayList<>();
+            int i = 0;
+            while(tableModel.getRowCount() > 0)
+            {
+                for(i = 0; i < tableModel.getRowCount(); i++)
+                {
+                    tableModel.removeRow(i);
+                }
+            }
+
+            HashMap<String,String> map = new HashMap<>();
+            map.put("pid", pID);
+            map.put("design", design);
+
+            list = new SearchProduct(map, ServerConstants.SEARCH_PRODUCT).allResult();
+            if(list.size() > 0)
+            {
+                i = 0;
+                while(i < list.size())
+                {
+                    tableModel.insertRow(i, new Object[]{
+                                        String.valueOf(i+1),
+                                        list.get(i).getPid(),
+                                        list.get(i).getDesign(),
+                                        list.get(i).getRack(),
+                                        list.get(i).getSubrack(),
+                                        list.get(i).getTexture(),
+                                        list.get(i).getQty()
+                                        });
+                    i++;
+                }
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Failed to fetch product", "Information", JOptionPane.INFORMATION_MESSAGE);
+            }
+            StockSummaryProgress.setVisible(false);
+            
+            return 0;
+        }
+        
+    }
     private void viewAllBtnSSummaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewAllBtnSSummaryActionPerformed
-        StockSummaryProgress.setIndeterminate(true);
-        DefaultTableModel tableModel = (DefaultTableModel) StockSummaryTable.getModel();
-        ArrayList<ProductModel> list = new ArrayList<>();
-        int i = 0;
-        while(tableModel.getRowCount() > 0)
-        {
-            for(i = 0; i < tableModel.getRowCount(); i++)
-            {
-                tableModel.removeRow(i);
-            }
-        }
-        
-        HashMap<String,String> map = new HashMap<>();
-        map.put("pid", "");
-        map.put("design", "");
-        
-        list = new SearchProduct(map, ServerConstants.SEARCH_PRODUCT).allResult();
-        if(list.size() > 0)
-        {
-            i = 0;
-            while(i < list.size())
-            {
-                tableModel.insertRow(i, new Object[]{
-                                    String.valueOf(i+1),
-                                    list.get(i).getPid(),
-                                    list.get(i).getDesign(),
-                                    list.get(i).getRack(),
-                                    list.get(i).getSubrack(),
-                                    list.get(i).getTexture(),
-                                    list.get(i).getQty()
-                                    });
-                i++;
-            }
-        }
-        else
-        {
-            JOptionPane.showMessageDialog(null, "Failed to fetch product", "Information", JOptionPane.INFORMATION_MESSAGE);
-        }
-        StockSummaryProgress.setIndeterminate(false);
+        new ViewAllSummaryProgress().execute();
     }//GEN-LAST:event_viewAllBtnSSummaryActionPerformed
 
+    class ViewAllSummaryProgress extends SwingWorker<Integer, String>
+    {
+
+        @Override
+        protected Integer doInBackground() throws Exception {
+            
+            StockSummaryProgress.setVisible(true);
+            DefaultTableModel tableModel = (DefaultTableModel) StockSummaryTable.getModel();
+            ArrayList<ProductModel> list = new ArrayList<>();
+            int i = 0;
+            while(tableModel.getRowCount() > 0)
+            {
+                for(i = 0; i < tableModel.getRowCount(); i++)
+                {
+                    tableModel.removeRow(i);
+                }
+            }
+
+            HashMap<String,String> map = new HashMap<>();
+            map.put("pid", "");
+            map.put("design", "");
+
+            list = new SearchProduct(map, ServerConstants.SEARCH_PRODUCT).allResult();
+            if(list.size() > 0)
+            {
+                i = 0;
+                while(i < list.size())
+                {
+                    tableModel.insertRow(i, new Object[]{
+                                        String.valueOf(i+1),
+                                        list.get(i).getPid(),
+                                        list.get(i).getDesign(),
+                                        list.get(i).getRack(),
+                                        list.get(i).getSubrack(),
+                                        list.get(i).getTexture(),
+                                        list.get(i).getQty()
+                                        });
+                    i++;
+                }
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Failed to fetch product", "Information", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+            StockSummaryProgress.setVisible(false);
+            return 0;
+        }
+        
+    }
+    
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
         setPanelVisibility(AddClient);
         setTitle(TITLE + " - Client Record");
@@ -2418,17 +2475,10 @@ public class MainUI extends javax.swing.JFrame {
         setPanelVisibility(PrintChalanPanel);
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
-    private void printRateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printRateActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_printRateActionPerformed
-
     private void printAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printAddBtnActionPerformed
         // TODO add your handling code here:
         if(!validateNumberInput(printQty.getText().trim()))
             JOptionPane.showMessageDialog(null,"Enter valid quantity","Alert",JOptionPane.WARNING_MESSAGE);
-        else
-            if(!validateNumberInput(printRate.getText().trim()))
-                JOptionPane.showMessageDialog(null,"Enter valid Rate per square meter","Alert",JOptionPane.WARNING_MESSAGE);
         else
             {
                 HashMap<String,String> map = new HashMap<>();
@@ -2440,22 +2490,25 @@ public class MainUI extends javax.swing.JFrame {
                 }
                 else
                 {
-                    DecimalFormat df = new DecimalFormat();
-                    df.setMaximumFractionDigits(2);
-                    DefaultTableModel dtm = (DefaultTableModel) printTable.getModel(); 
-                    float amt = Float.parseFloat(printQty.getText()) * Float.parseFloat(printRate.getText());
-                    String amount = df.format(amt);
-                    Object[] row = {String.valueOf(dtm.getRowCount()+1), model.getDesign()+" ("+model.getTexture()+")", printRate.getText(), printQty.getText(),amount,model.getPid()};
-                    dtm.addRow(row);
-                    amt += Float.parseFloat(printTotalSum.getText().replace(",", ""));
-                    amount = df.format(amt);
-                    if(amount.indexOf(".") == -1)
-                        amount+=".00";
-                    printTotalSum.setText(amount);
-                    
-                    printProductId.setText("");
-                    printRate.setText("");
-                    printQty.setText("");
+                    HashMap<String,String> map1 = new HashMap<>();
+                    map1.put("id", printProductId.getText());
+                    map1.put("qty",printQty.getText());
+                    String reply = new SendBulkRequest(map1, ServerConstants.DECREMENT_STOCK).serverResponse();
+                    System.err.println(reply);
+                    CustomJsonParser parser = new CustomJsonParser(reply);
+                    if(parser.getStatus())
+                    {
+                        DefaultTableModel dtm = (DefaultTableModel) printTable.getModel(); 
+                        Object[] row = {String.valueOf(dtm.getRowCount()+1), model.getDesign()+" ("+model.getTexture()+")", printQty.getText(),model.getPid()};
+                        dtm.addRow(row);
+
+                        printProductId.setText("");
+                        printQty.setText("");
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(null,"Failed to update stock at server","Error",JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             }
         
@@ -2464,30 +2517,26 @@ public class MainUI extends javax.swing.JFrame {
 
     private void printProductIdKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_printProductIdKeyReleased
         // TODO add your handling code here:
-        if(printProductId.getText().isEmpty() || printRate.getText().isEmpty() || printQty.getText().isEmpty())
+        if(printProductId.getText().isEmpty() || printQty.getText().isEmpty())
             printAddBtn.setEnabled(false);
         else
             printAddBtn.setEnabled(true);
     }//GEN-LAST:event_printProductIdKeyReleased
 
     private void printQtyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_printQtyKeyReleased
-        if(printProductId.getText().isEmpty() || printRate.getText().isEmpty() || printQty.getText().isEmpty())
+        if(printProductId.getText().isEmpty() || printQty.getText().isEmpty())
             printAddBtn.setEnabled(false);
         else
             printAddBtn.setEnabled(true);
     }//GEN-LAST:event_printQtyKeyReleased
 
-    private void printRateKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_printRateKeyReleased
-        if(printProductId.getText().isEmpty() || printRate.getText().isEmpty() || printQty.getText().isEmpty())
-            printAddBtn.setEnabled(false);
-        else
-            printAddBtn.setEnabled(true);
-    }//GEN-LAST:event_printRateKeyReleased
-
     private void printPrintBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printPrintBtnActionPerformed
         try {
             // TODO add your handling code here:
-            new GenerateInvoice(printBuyerDetail.getText(),printInvoiceNote.getText(), printDate.getText(), printTotalSum.getText(), printTable,paymentType.getSelectedItem().toString()).printInvoice();
+            
+            new GenerateInvoice(printBuyerDetail.getText(),printInvoiceNote.getText(), printDate.getText(),printTable,paymentType.getSelectedItem().toString(),"(Original - Buyer's Copy)").printInvoice();
+            new GenerateInvoice(printBuyerDetail.getText(),printInvoiceNote.getText(), printDate.getText(),printTable,paymentType.getSelectedItem().toString(),"(Duplicate - Seller's Copy)").printInvoice();
+            new GenerateInvoice(printBuyerDetail.getText(),printInvoiceNote.getText(), printDate.getText(),printTable,paymentType.getSelectedItem().toString(),"(Normal Copy)").printInvoice();
         } catch (InvalidFormatException ex) {
             Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -2496,7 +2545,7 @@ public class MainUI extends javax.swing.JFrame {
     }//GEN-LAST:event_printPrintBtnActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        
+      
         DownloadBarcode.runDownloadDialog();
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
@@ -2518,7 +2567,7 @@ public class MainUI extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
             resetTable(printTable);
-            printTotalSum.setText("0.00");
+            
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -2616,12 +2665,10 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
-    private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
-    private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -2661,9 +2708,7 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JButton printPrintBtn;
     private javax.swing.JTextField printProductId;
     private javax.swing.JTextField printQty;
-    private javax.swing.JTextField printRate;
     private javax.swing.JTable printTable;
-    private javax.swing.JLabel printTotalSum;
     private javax.swing.JTextField productID;
     private javax.swing.JTextField productIDAddBulk;
     private javax.swing.JTextField productIDAddSingle;
@@ -2872,6 +2917,12 @@ public class MainUI extends javax.swing.JFrame {
                 tableModel.removeRow(i);
             }
         }
+    }
+
+    private void setProgressBarVisibility() {
+        mainUiProgress.setVisible(false);
+        AddSingleProgress.setVisible(false);
+        StockSummaryProgress.setVisible(false);
     }
     
     

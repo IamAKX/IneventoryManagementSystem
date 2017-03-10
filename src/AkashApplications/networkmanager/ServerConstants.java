@@ -24,5 +24,7 @@ public class ServerConstants {
     public static final String FETCH_CLIENT = BASE_URL + "FetchClient.php";
     
     public static final String DOWNLOAD_BARCODE = BASE_URL + "Compress.php";
+    public static final String DELETE_STOCK = BASE_URL + "DeleteStock.php";
+    public static final String DECREMENT_STOCK = BASE_URL + "DecrementStock.php";
     
 }

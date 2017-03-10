@@ -17,7 +17,7 @@
 
 		if(file_put_contents($path, base64_decode($barcode)) != false)
 		{
-			$sql = "INSERT INTO `STOCK`(`PID`, `DESIGN`, `RACK`, `SUBRACK`, `TEXTURE`, `QUANTITY`, `BARCODE`) VALUES ('$pid','$design','$rack','$subrack','$texture','$qty','$path')";
+			$sql = "INSERT INTO `STOCK`(`PID`, `DESIGN`, `RACK`, `SUBRACK`, `TEXTURE`, `QUANTITY`, `BARCODE`) VALUES ('$pid','$design','$rack','$subrack','$texture',$qty,'$path')";
 			if(mysqli_query($conn,$sql))
 			{
 				

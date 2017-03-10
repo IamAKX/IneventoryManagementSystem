@@ -10,7 +10,7 @@
 
 		require_once('Connector.php');
 
-		$sql = "UPDATE `STOCK` SET `DESIGN`='$design',`RACK`='$rack',`SUBRACK`='$subrack',`TEXTURE`='$texture',`QUANTITY`='$qty' WHERE `PID`='$pid'";
+		$sql = "UPDATE `STOCK` SET `DESIGN`='$design',`RACK`='$rack',`SUBRACK`='$subrack',`TEXTURE`='$texture',`QUANTITY`= $qty WHERE `PID`='$pid'";
 		$response = array();
 
 		if(mysqli_query($conn,$sql))

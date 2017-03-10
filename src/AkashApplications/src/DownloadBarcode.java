@@ -11,6 +11,7 @@ import java.awt.Toolkit;
 import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 
 /**
  *
@@ -44,7 +45,7 @@ public class DownloadBarcode extends javax.swing.JFrame {
         downloadBrowse = new javax.swing.JButton();
         downloadBtn = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Downloading Barcodes");
         setResizable(false);
 
@@ -130,27 +131,37 @@ public class DownloadBarcode extends javax.swing.JFrame {
 
     private void downloadBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downloadBtnActionPerformed
         // TODO add your handling code here:
-        if(downloadLocation.getText().isEmpty())
-        {
-            JOptionPane.showMessageDialog(null,"Choose the location where you want download the folder.","Alert",JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        downloadProgress.setVisible(true);
-        downloadLabel.setVisible(true);
-        
-        String fileURL = ServerConstants.BASE_URL+"Barcodes.zip";
-        try {
-            HttpDownloadUtility.downloadFile(fileURL, downloadLocation.getText());
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null,ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
-        }
-        
-        downloadProgress.setVisible(true);
-        downloadLabel.setVisible(true);
-        setVisible(false);
-        dispose();
+        new DownloadProgress().execute();
     }//GEN-LAST:event_downloadBtnActionPerformed
 
+    class DownloadProgress extends SwingWorker<Integer, String>
+    {
+
+        @Override
+        protected Integer doInBackground() throws Exception {
+            if(downloadLocation.getText().isEmpty())
+            {
+                JOptionPane.showMessageDialog(null,"Choose the location where you want download the folder.","Alert",JOptionPane.WARNING_MESSAGE);
+                return 0;
+            }
+            downloadProgress.setVisible(true);
+            downloadLabel.setVisible(true);
+
+            String fileURL = ServerConstants.BASE_URL+"Barcodes.zip";
+            try {
+                HttpDownloadUtility.downloadFile(fileURL, downloadLocation.getText());
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null,ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+            }
+
+            downloadProgress.setVisible(true);
+            downloadLabel.setVisible(true);
+            setVisible(false);
+            dispose();
+            return 0;
+        }
+        
+    }
     /**
      * @param args the command line arguments
      */
