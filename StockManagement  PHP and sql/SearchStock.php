@@ -6,7 +6,7 @@
 
 		require_once('Connector.php');
 
-		$sql = "SELECT * FROM `STOCK` WHERE `PID` LIKE '%$pid%' OR `DESIGN` LIKE '%$design%'";	
+		$sql = "SELECT * FROM `STOCK` WHERE `PID` LIKE '%$pid%' AND `DESIGN` LIKE '%$design%'";	
 		$result = mysqli_query($conn,$sql);
 		$product = array();
 

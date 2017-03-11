@@ -5,7 +5,7 @@
 
 		require_once('Connector.php');
 
-		$sql = "DELETE FROM `STOCK` WHERE `PID`=$id";
+		$sql = "DELETE FROM `STOCK` WHERE `PID`='$id'";
 		$response = array();
 
 		if(mysqli_query($conn,$sql))

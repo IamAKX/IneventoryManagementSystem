@@ -129,6 +129,7 @@ public class MainUI extends javax.swing.JFrame {
                 HashMap<String,String> hashMap = new HashMap<>();
                 hashMap.put("id",pid);
                 String reply = new SendBulkRequest(hashMap, ServerConstants.DELETE_STOCK).serverResponse();
+                System.err.println(pid+"\n"+reply);
                 CustomJsonParser cjp = new CustomJsonParser(reply);
                 if(cjp.getStatus())
                     new ViewAllSummaryProgress().execute();
@@ -2059,6 +2060,9 @@ public class MainUI extends javax.swing.JFrame {
             StockSummaryProgress.setVisible(true);
             String pID = productIDSSummary.getText().trim().equals("") ? " " : productIDSSummary.getText();
             String design = designNameSSummary.getText().trim().equals("") ? " " : designNameSSummary.getText();
+            
+            System.err.println(pID+"\n"+design);
+            
             DefaultTableModel tableModel = (DefaultTableModel) StockSummaryTable.getModel();
             ArrayList<ProductModel> list = new ArrayList<>();
             int i = 0;
