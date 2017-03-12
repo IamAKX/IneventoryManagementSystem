@@ -35,6 +35,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
@@ -51,7 +52,6 @@ public class MainUI extends javax.swing.JFrame {
     /**
      * Creates new form MainUI
      */
-    public static final String TITLE = "Inventory Management";
     public MainUI() {
         initComponents();
         
@@ -144,10 +144,22 @@ public class MainUI extends javax.swing.JFrame {
         setdate(printDate);
         printInvoiceNote.setText(setDeliveryNote());
         
-        setTitle(TITLE+" - Stock");
+        setTitle(buildTitle()+" - Stock");
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon.png")));
     }
     
+    
+    public String buildTitle()
+    {
+        String place = "";
+        if(radioRuby.isSelected())
+            place = radioRuby.getText();
+        else
+            if(radioBehala.isSelected())
+                place = radioBehala.getText();
+        String TITLE = "Inventory Management ("+place+") ";
+        return TITLE;
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -158,6 +170,7 @@ public class MainUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         PrintChalanPanel = new javax.swing.JPanel();
         jLabel25 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
@@ -282,6 +295,10 @@ public class MainUI extends javax.swing.JFrame {
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        jMenu4 = new javax.swing.JMenu();
+        radioRuby = new javax.swing.JRadioButtonMenuItem();
+        radioBehala = new javax.swing.JRadioButtonMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenuItem10 = new javax.swing.JMenuItem();
@@ -1550,6 +1567,32 @@ public class MainUI extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMenuItem2);
+        jMenu2.add(jSeparator2);
+
+        jMenu4.setText("Location ..");
+
+        radioRuby.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.ALT_MASK));
+        buttonGroup1.add(radioRuby);
+        radioRuby.setSelected(true);
+        radioRuby.setText("Ruby");
+        radioRuby.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioRubyActionPerformed(evt);
+            }
+        });
+        jMenu4.add(radioRuby);
+
+        radioBehala.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.ALT_MASK));
+        buttonGroup1.add(radioBehala);
+        radioBehala.setText("Behala");
+        radioBehala.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioBehalaActionPerformed(evt);
+            }
+        });
+        jMenu4.add(radioBehala);
+
+        jMenu2.add(jMenu4);
 
         jMenuBar1.add(jMenu2);
 
@@ -1637,13 +1680,13 @@ public class MainUI extends javax.swing.JFrame {
 
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
         // TODO add your handling code here:
-        setTitle(TITLE + " - Stock");
+        setTitle(buildTitle() + " - Stock");
         setPanelVisibility(StockPane);
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
-        setTitle(TITLE + " - Stock Summary");
+        setTitle(buildTitle() + " - Stock Summary");
         setPanelVisibility(StockSummaryPane);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
@@ -1689,12 +1732,12 @@ public class MainUI extends javax.swing.JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
-        setTitle(TITLE + " - Add Bulk Product");
+        setTitle(buildTitle() + " - Add Bulk Product");
         setPanelVisibility(AddBulkItemPane);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        setTitle(TITLE + " - Add Single Product");
+        setTitle(buildTitle() + " - Add Single Product");
         setPanelVisibility(AddSingleItemPane);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
@@ -2163,13 +2206,13 @@ public class MainUI extends javax.swing.JFrame {
     
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
         setPanelVisibility(AddClient);
-        setTitle(TITLE + " - Client Record");
+        setTitle(buildTitle() + " - Client Record");
         fetchClients("", "");
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
         setPanelVisibility(FavouriteClientPanel);
-        setTitle(TITLE + " - Favourite Client");
+        setTitle(buildTitle() + " - Favourite Client");
         fetchFavouriteClients("", "");
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
@@ -2475,7 +2518,7 @@ public class MainUI extends javax.swing.JFrame {
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         // TODO add your handling code here:
-        setTitle(TITLE + " - Print Chalan");
+        setTitle(buildTitle() + " - Print Chalan");
         setPanelVisibility(PrintChalanPanel);
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
@@ -2574,6 +2617,15 @@ public class MainUI extends javax.swing.JFrame {
             
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void radioRubyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioRubyActionPerformed
+        // TODO add your handling code here:
+        setTitle(getTitle().replace("Behala", "Ruby"));
+    }//GEN-LAST:event_radioRubyActionPerformed
+
+    private void radioBehalaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioBehalaActionPerformed
+        setTitle(getTitle().replace("Ruby", "Behala"));
+    }//GEN-LAST:event_radioBehalaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -2640,6 +2692,7 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JButton addBtnAddBulk;
     private javax.swing.JLabel barcodeAddBulk;
     private javax.swing.JLabel barcodeAddSingle;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton clientSearchBtn;
     private javax.swing.JButton clientViewAll;
     private javax.swing.JTextField designName;
@@ -2683,6 +2736,7 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
@@ -2702,6 +2756,7 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JProgressBar mainUiProgress;
     private javax.swing.JLabel mainUiProgressReport;
     private javax.swing.JComboBox<String> paymentType;
@@ -2725,6 +2780,8 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JTextField rackNo;
     private javax.swing.JTextField rackNoAddBulk;
     private javax.swing.JTextField rackNoAddSingle;
+    private javax.swing.JRadioButtonMenuItem radioBehala;
+    private javax.swing.JRadioButtonMenuItem radioRuby;
     private javax.swing.JButton saveAddSingle;
     private javax.swing.JButton saveAllBtnAddBulk;
     private javax.swing.JButton searchBtn;
@@ -2770,7 +2827,7 @@ public class MainUI extends javax.swing.JFrame {
         map.put("pid", pID);
         map.put("design", pID);
     
-        ProductModel model = new SearchProduct(map, ServerConstants.SEARCH_PRODUCT).specificResult(pID);
+        ProductModel model = new SearchProduct(map, ServerConstants.GET_PRODUCT).specificResult(pID);
         if(model==null)
         {
             JOptionPane.showMessageDialog(null, "No product found with ID "+pID, "Search Result", JOptionPane.INFORMATION_MESSAGE);
