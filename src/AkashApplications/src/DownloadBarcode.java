@@ -6,9 +6,11 @@
 package AkashApplications.src;
 
 import AkashApplications.downloadBarcode.HttpDownloadUtility;
+import AkashApplications.networkmanager.SendBulkRequest;
 import AkashApplications.networkmanager.ServerConstants;
 import java.awt.Toolkit;
 import java.io.IOException;
+import java.util.HashMap;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
@@ -146,7 +148,7 @@ public class DownloadBarcode extends javax.swing.JFrame {
             }
             downloadProgress.setVisible(true);
             downloadLabel.setVisible(true);
-
+            String Response = new SendBulkRequest(new HashMap<String, String>() , ServerConstants.DOWNLOAD_BARCODE).serverResponse();
             String fileURL = ServerConstants.BASE_URL+"Barcodes.zip";
             try {
                 HttpDownloadUtility.downloadFile(fileURL, downloadLocation.getText());
