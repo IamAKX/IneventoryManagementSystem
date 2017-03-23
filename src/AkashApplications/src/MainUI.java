@@ -189,6 +189,7 @@ public class MainUI extends javax.swing.JFrame {
         jLabel34 = new javax.swing.JLabel();
         paymentType = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         StockPane = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         productID = new javax.swing.JTextField();
@@ -283,6 +284,7 @@ public class MainUI extends javax.swing.JFrame {
         StockSummaryProgress = new javax.swing.JProgressBar();
         StockSummaryProgressReport = new javax.swing.JLabel();
         viewAllBtnSSummary = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
@@ -321,6 +323,9 @@ public class MainUI extends javax.swing.JFrame {
         jLabel31.setText("Product ID");
 
         printProductId.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                printProductIdKeyPressed(evt);
+            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 printProductIdKeyReleased(evt);
             }
@@ -384,6 +389,13 @@ public class MainUI extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setText("Save");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout PrintChalanPanelLayout = new javax.swing.GroupLayout(PrintChalanPanel);
         PrintChalanPanel.setLayout(PrintChalanPanelLayout);
         PrintChalanPanelLayout.setHorizontalGroup(
@@ -430,6 +442,8 @@ public class MainUI extends javax.swing.JFrame {
                         .addGap(24, 24, 24))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PrintChalanPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(printPrintBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
         );
@@ -464,7 +478,9 @@ public class MainUI extends javax.swing.JFrame {
                 .addGap(31, 31, 31)
                 .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(printPrintBtn)
+                .addGroup(PrintChalanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(printPrintBtn)
+                    .addComponent(jButton2))
                 .addGap(27, 27, 27))
         );
 
@@ -1406,7 +1422,7 @@ public class MainUI extends javax.swing.JFrame {
                 java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, true, true
+                false, false, true, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -1432,17 +1448,20 @@ public class MainUI extends javax.swing.JFrame {
             }
         });
 
+        jButton3.setText("Update");
+        jButton3.setEnabled(false);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout StockSummaryPaneLayout = new javax.swing.GroupLayout(StockSummaryPane);
         StockSummaryPane.setLayout(StockSummaryPaneLayout);
         StockSummaryPaneLayout.setHorizontalGroup(
             StockSummaryPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, StockSummaryPaneLayout.createSequentialGroup()
                 .addGroup(StockSummaryPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(StockSummaryPaneLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(viewAllBtnSSummary, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(39, 39, 39)
-                        .addComponent(searchBtnSSummary, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(StockSummaryPaneLayout.createSequentialGroup()
                         .addGap(24, 24, 24)
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1451,7 +1470,14 @@ public class MainUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(designNameSSummary, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)))
+                        .addComponent(designNameSSummary, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE))
+                    .addGroup(StockSummaryPaneLayout.createSequentialGroup()
+                        .addGap(290, 290, 290)
+                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(32, 32, 32)
+                        .addComponent(viewAllBtnSSummary, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(39, 39, 39)
+                        .addComponent(searchBtnSSummary, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(37, 37, 37))
             .addGroup(StockSummaryPaneLayout.createSequentialGroup()
                 .addContainerGap()
@@ -1477,6 +1503,7 @@ public class MainUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(StockSummaryPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(searchBtnSSummary)
+                    .addComponent(jButton3)
                     .addComponent(viewAllBtnSSummary))
                 .addGap(33, 33, 33)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1644,6 +1671,7 @@ public class MainUI extends javax.swing.JFrame {
         {
             editUpdateBtn.setEnabled(true);
             new FetchStockResult().execute();
+            
         }
         else
             editUpdateBtn.setEnabled(false);
@@ -1773,13 +1801,21 @@ public class MainUI extends javax.swing.JFrame {
                     rackNo.setEnabled(false);
                     subRackNo.setEnabled(false);
                     texture.setEnabled(false);
-                    qty.setEditable(false);
+                    qty.setEnabled(false);
                     editUpdateBtn.setText("Edit");
                     mainUiProgress.setValue(0);
                     mainUiProgressReport.setText(parser.getReason());
                     
                     designName.setText("");
-                    new FetchStockResult().execute();
+                    //new FetchStockResult().execute();
+                    
+                    productID.setText("");
+                    designName.setText("");
+                    rackNo.setText("");
+                    subRackNo.setText("");
+                    texture.setText("");
+                    qty.setText("");
+                    productID.requestFocusInWindow();
                 }
                 else
                 {
@@ -2070,6 +2106,7 @@ public class MainUI extends javax.swing.JFrame {
     }//GEN-LAST:event_searchBtnActionPerformed
     class FetchStockResult extends SwingWorker<Integer, String>
     {
+        
 
         @Override
         protected Integer doInBackground() throws Exception {
@@ -2581,9 +2618,9 @@ public class MainUI extends javax.swing.JFrame {
         try {
             // TODO add your handling code here:
             
-            new GenerateInvoice(printBuyerDetail.getText(),printInvoiceNote.getText(), printDate.getText(),printTable,paymentType.getSelectedItem().toString(),"(Original - Buyer's Copy)").printInvoice();
-            new GenerateInvoice(printBuyerDetail.getText(),printInvoiceNote.getText(), printDate.getText(),printTable,paymentType.getSelectedItem().toString(),"(Duplicate - Seller's Copy)").printInvoice();
-            new GenerateInvoice(printBuyerDetail.getText(),printInvoiceNote.getText(), printDate.getText(),printTable,paymentType.getSelectedItem().toString(),"(Normal Copy)").printInvoice();
+            new GenerateInvoice(printBuyerDetail.getText(),printInvoiceNote.getText(), printDate.getText(),printTable,paymentType.getSelectedItem().toString(),"(Original - Buyer's Copy)").printInvoice(true);
+            new GenerateInvoice(printBuyerDetail.getText(),printInvoiceNote.getText(), printDate.getText(),printTable,paymentType.getSelectedItem().toString(),"(Duplicate - Seller's Copy)").printInvoice(true);
+            new GenerateInvoice(printBuyerDetail.getText(),printInvoiceNote.getText(), printDate.getText(),printTable,paymentType.getSelectedItem().toString(),"(Normal Copy)").printInvoice(true);
         } catch (InvalidFormatException ex) {
             Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -2626,6 +2663,41 @@ public class MainUI extends javax.swing.JFrame {
         setTitle(getTitle().replace("Ruby", "Behala"));
     }//GEN-LAST:event_radioBehalaActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            new GenerateInvoice(printBuyerDetail.getText(),printInvoiceNote.getText(), printDate.getText(),printTable,paymentType.getSelectedItem().toString(),"(Original - Buyer's Copy)").printInvoice(false);
+            new GenerateInvoice(printBuyerDetail.getText(),printInvoiceNote.getText(), printDate.getText(),printTable,paymentType.getSelectedItem().toString(),"(Duplicate - Seller's Copy)").printInvoice(false);
+            new GenerateInvoice(printBuyerDetail.getText(),printInvoiceNote.getText(), printDate.getText(),printTable,paymentType.getSelectedItem().toString(),"(Normal Copy)").printInvoice(false);
+        } catch (InvalidFormatException ex) {
+            Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void printProductIdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_printProductIdKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == 10)
+            printQty.requestFocusInWindow();
+    }//GEN-LAST:event_printProductIdKeyPressed
+
+//    class UpdateFromStockPane extends SwingWorker<Integer, String>
+//    {
+//
+//        @Override
+//        protected Integer doInBackground() throws Exception {
+//           
+//            DefaultTableModel tableModel = (DefaultTableModel) StockSummaryTable.getModel();
+//            
+//            return 0; 
+//        }
+//
+//        
+//    }
     /**
      * @param args the command line arguments
      */
@@ -2702,6 +2774,8 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JButton editUpdateBtn;
     private javax.swing.JButton generateBarcodeAddSingle;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -2841,6 +2915,7 @@ public class MainUI extends javax.swing.JFrame {
             qty.setText(model.getQty());
             texture.setText(model.getTexture());
             editUpdateBtn.setEnabled(true);
+            
         }
     }
 
@@ -2940,7 +3015,7 @@ public class MainUI extends javax.swing.JFrame {
 
     private void setdate(JTextField printDate) {
          Date today = new Date();
-         SimpleDateFormat parseFormat = new SimpleDateFormat("dd-mm-yyyy (EEEE)");
+         SimpleDateFormat parseFormat = new SimpleDateFormat("dd-MM-yyyy (EEEE)");
          String date = parseFormat.format(today);
          printDate.setText(date);
          System.out.println(date);

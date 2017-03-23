@@ -59,7 +59,7 @@ public class GenerateInvoice {
     }
     
     
-    public boolean printInvoice() throws FileNotFoundException, InvalidFormatException, IOException
+    public boolean printInvoice(boolean printCommand) throws FileNotFoundException, InvalidFormatException, IOException
     {
         
         XWPFDocument document = new XWPFDocument();
@@ -362,7 +362,8 @@ public class GenerateInvoice {
             document.write(outputStream);
             outputStream.close();
             new InvoiceNoteManager().setProperty();
-            //printDocument();
+            if(printCommand)
+                printDocument();
         }
         catch(Exception e)
         {
