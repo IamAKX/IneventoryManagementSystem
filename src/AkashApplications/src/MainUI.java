@@ -284,7 +284,8 @@ public class MainUI extends javax.swing.JFrame {
         StockSummaryProgress = new javax.swing.JProgressBar();
         StockSummaryProgressReport = new javax.swing.JLabel();
         viewAllBtnSSummary = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        updateStockSummary = new javax.swing.JButton();
+        ConfirmUpdateCB = new javax.swing.JCheckBox();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
@@ -1448,11 +1449,19 @@ public class MainUI extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("Update");
-        jButton3.setEnabled(false);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        updateStockSummary.setText("Update");
+        updateStockSummary.setEnabled(false);
+        updateStockSummary.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                updateStockSummaryActionPerformed(evt);
+            }
+        });
+
+        ConfirmUpdateCB.setFont(new java.awt.Font("Dialog", 2, 12)); // NOI18N
+        ConfirmUpdateCB.setText("  Confirm updating the products");
+        ConfirmUpdateCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ConfirmUpdateCBActionPerformed(evt);
             }
         });
 
@@ -1461,29 +1470,29 @@ public class MainUI extends javax.swing.JFrame {
         StockSummaryPaneLayout.setHorizontalGroup(
             StockSummaryPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, StockSummaryPaneLayout.createSequentialGroup()
-                .addGroup(StockSummaryPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(StockSummaryPaneLayout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(6, 6, 6)
-                        .addComponent(productIDSSummary, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(designNameSSummary, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE))
-                    .addGroup(StockSummaryPaneLayout.createSequentialGroup()
-                        .addGap(290, 290, 290)
-                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(32, 32, 32)
-                        .addComponent(viewAllBtnSSummary, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(39, 39, 39)
-                        .addComponent(searchBtnSSummary, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(24, 24, 24)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addComponent(productIDSSummary, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(designNameSSummary)
                 .addGap(37, 37, 37))
             .addGroup(StockSummaryPaneLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(StockSummaryPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(StockSummaryProgress, javax.swing.GroupLayout.DEFAULT_SIZE, 775, Short.MAX_VALUE)
+                    .addComponent(StockSummaryProgress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(StockSummaryProgressReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(StockSummaryPaneLayout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(ConfirmUpdateCB)
+                        .addGap(40, 40, 40)
+                        .addComponent(updateStockSummary, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(viewAllBtnSSummary, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(39, 39, 39)
+                        .addComponent(searchBtnSSummary, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 763, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -1500,12 +1509,14 @@ public class MainUI extends javax.swing.JFrame {
                         .addGroup(StockSummaryPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(designNameSSummary, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(27, 27, 27)
                 .addGroup(StockSummaryPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(searchBtnSSummary)
-                    .addComponent(jButton3)
+                    .addGroup(StockSummaryPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(updateStockSummary)
+                        .addComponent(ConfirmUpdateCB))
                     .addComponent(viewAllBtnSSummary))
-                .addGap(33, 33, 33)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(StockSummaryProgress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2138,6 +2149,8 @@ public class MainUI extends javax.swing.JFrame {
         @Override
         protected Integer doInBackground() throws Exception {
             StockSummaryProgress.setVisible(true);
+            StockSummaryProgress.setIndeterminate(true);
+            StockSummaryProgressReport.setText("Searching products...");
             String pID = productIDSSummary.getText().trim().equals("") ? " " : productIDSSummary.getText();
             String design = designNameSSummary.getText().trim().equals("") ? " " : designNameSSummary.getText();
             
@@ -2181,7 +2194,8 @@ public class MainUI extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Failed to fetch product", "Information", JOptionPane.INFORMATION_MESSAGE);
             }
             StockSummaryProgress.setVisible(false);
-            
+            StockSummaryProgress.setIndeterminate(false);
+            StockSummaryProgressReport.setText("");
             return 0;
         }
         
@@ -2197,6 +2211,8 @@ public class MainUI extends javax.swing.JFrame {
         protected Integer doInBackground() throws Exception {
             
             StockSummaryProgress.setVisible(true);
+            StockSummaryProgress.setIndeterminate(true);
+            StockSummaryProgressReport.setText("Fetching products...");
             DefaultTableModel tableModel = (DefaultTableModel) StockSummaryTable.getModel();
             ArrayList<ProductModel> list = new ArrayList<>();
             int i = 0;
@@ -2236,6 +2252,8 @@ public class MainUI extends javax.swing.JFrame {
             }
 
             StockSummaryProgress.setVisible(false);
+            StockSummaryProgress.setIndeterminate(false);
+            StockSummaryProgressReport.setText("");
             return 0;
         }
         
@@ -2621,6 +2639,9 @@ public class MainUI extends javax.swing.JFrame {
             new GenerateInvoice(printBuyerDetail.getText(),printInvoiceNote.getText(), printDate.getText(),printTable,paymentType.getSelectedItem().toString(),"(Original - Buyer's Copy)").printInvoice(true);
             new GenerateInvoice(printBuyerDetail.getText(),printInvoiceNote.getText(), printDate.getText(),printTable,paymentType.getSelectedItem().toString(),"(Duplicate - Seller's Copy)").printInvoice(true);
             new GenerateInvoice(printBuyerDetail.getText(),printInvoiceNote.getText(), printDate.getText(),printTable,paymentType.getSelectedItem().toString(),"(Normal Copy)").printInvoice(true);
+            resetTable(printTable);
+            printBuyerDetail.setText("");
+            printBuyerDetail.requestFocusInWindow();
         } catch (InvalidFormatException ex) {
             Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -2651,6 +2672,8 @@ public class MainUI extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
             resetTable(printTable);
+            printProductId.setText("");
+            printQty.setText("");
             
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -2668,6 +2691,9 @@ public class MainUI extends javax.swing.JFrame {
             new GenerateInvoice(printBuyerDetail.getText(),printInvoiceNote.getText(), printDate.getText(),printTable,paymentType.getSelectedItem().toString(),"(Original - Buyer's Copy)").printInvoice(false);
             new GenerateInvoice(printBuyerDetail.getText(),printInvoiceNote.getText(), printDate.getText(),printTable,paymentType.getSelectedItem().toString(),"(Duplicate - Seller's Copy)").printInvoice(false);
             new GenerateInvoice(printBuyerDetail.getText(),printInvoiceNote.getText(), printDate.getText(),printTable,paymentType.getSelectedItem().toString(),"(Normal Copy)").printInvoice(false);
+            resetTable(printTable);
+            printBuyerDetail.setText("");
+            printBuyerDetail.requestFocusInWindow();
         } catch (InvalidFormatException ex) {
             Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -2675,9 +2701,10 @@ public class MainUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void updateStockSummaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateStockSummaryActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+        new UpdateFromStockPane().execute();
+    }//GEN-LAST:event_updateStockSummaryActionPerformed
 
     private void printProductIdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_printProductIdKeyPressed
         // TODO add your handling code here:
@@ -2685,19 +2712,73 @@ public class MainUI extends javax.swing.JFrame {
             printQty.requestFocusInWindow();
     }//GEN-LAST:event_printProductIdKeyPressed
 
-//    class UpdateFromStockPane extends SwingWorker<Integer, String>
-//    {
-//
-//        @Override
-//        protected Integer doInBackground() throws Exception {
-//           
-//            DefaultTableModel tableModel = (DefaultTableModel) StockSummaryTable.getModel();
-//            
-//            return 0; 
-//        }
-//
-//        
-//    }
+    private void ConfirmUpdateCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmUpdateCBActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) StockSummaryTable.getModel();
+        if(model.getRowCount()<1)
+        {
+            JOptionPane.showMessageDialog(null, "No product listed in the table. Click on View All or Search product you want to update.","Alert",JOptionPane.WARNING_MESSAGE);
+            if(ConfirmUpdateCB.isSelected())
+            {
+                ConfirmUpdateCB.setSelected(false);
+                updateStockSummary.setEnabled(false);
+            }
+            return;
+        }
+        if(ConfirmUpdateCB.isSelected())
+        {
+            updateStockSummary.setEnabled(true);
+        }
+        else
+        {
+            updateStockSummary.setEnabled(false);
+        }
+    }//GEN-LAST:event_ConfirmUpdateCBActionPerformed
+
+    class UpdateFromStockPane extends SwingWorker<Integer, String>
+    {
+
+        @Override
+        protected Integer doInBackground() throws Exception {
+           StockSummaryProgress.setIndeterminate(true);
+           StockSummaryProgress.setVisible(true);
+            DefaultTableModel tableModel = (DefaultTableModel) StockSummaryTable.getModel();
+            int size = tableModel.getRowCount();
+            boolean failed = false;
+            String failedProducts = "";
+           for(int i=0;i<tableModel.getRowCount();i++)
+           {
+               StockSummaryProgressReport.setText("Updating products "+(i+1)+" of "+size+" ...");
+               HashMap<String,String> map = new HashMap<>();
+               map.put("pid", (String) tableModel.getValueAt(i, 1));
+                map.put("design",(String) tableModel.getValueAt(i, 2));
+                map.put("rack",(String) tableModel.getValueAt(i, 3));
+                map.put("subrack",(String) tableModel.getValueAt(i, 4));
+                map.put("texture",(String) tableModel.getValueAt(i, 5));
+                map.put("qty",(String) tableModel.getValueAt(i, 6));
+                String s = new SendBulkRequest(map, ServerConstants.UPDATE_PRODUCT).serverResponse();
+                System.out.println(s);
+                CustomJsonParser parser = new CustomJsonParser(s);
+                if(!parser.getStatus())
+                {
+                    failed = true;
+                    JOptionPane.showMessageDialog(null, "Internal Server Error : \n"+parser.getReason(), "Server Error", JOptionPane.ERROR_MESSAGE);
+                    failedProducts+= (String) tableModel.getValueAt(i, 1)+", ";
+                }
+                StockSummaryProgressReport.setText("");
+           }
+            
+           StockSummaryProgress.setIndeterminate(false);
+           StockSummaryProgress.setVisible(false);
+           if(failed)
+           {
+               JOptionPane.showMessageDialog(null, "Following product were failed to update:\n"+failedProducts, "Failed to update", JOptionPane.WARNING_MESSAGE);
+           }
+            return 0; 
+        }
+
+        
+    }
     /**
      * @param args the command line arguments
      */
@@ -2750,6 +2831,7 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JTextField ClientPhone;
     private javax.swing.JTable ClientTable;
     private javax.swing.JButton ClientUpdate;
+    private javax.swing.JCheckBox ConfirmUpdateCB;
     private javax.swing.JTextField FavClientComapny;
     private javax.swing.JTextField FavClientName;
     private javax.swing.JButton FavSearchBtn;
@@ -2775,7 +2857,6 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JButton generateBarcodeAddSingle;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -2867,6 +2948,7 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JTextField textureAddBulk;
     private javax.swing.JTextField textureAddSingle;
     private javax.swing.JButton updateCancleBtn;
+    private javax.swing.JButton updateStockSummary;
     private javax.swing.JButton viewAllBtnSSummary;
     // End of variables declaration//GEN-END:variables
 

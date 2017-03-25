@@ -148,13 +148,13 @@ public class DownloadBarcode extends javax.swing.JFrame {
             }
             downloadProgress.setVisible(true);
             downloadLabel.setVisible(true);
-            String Response = new SendBulkRequest(new HashMap<String, String>() , ServerConstants.DOWNLOAD_BARCODE).serverResponse();
-            String fileURL = ServerConstants.BASE_URL+"Barcodes.zip";
-            try {
-                HttpDownloadUtility.downloadFile(fileURL, downloadLocation.getText());
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null,ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
-            }
+            String Response = new SendBulkRequest(new HashMap<String, String>() , ServerConstants.BASE_URL+"Barcodes.zip").serverResponse();
+//            String fileURL = ServerConstants.BASE_URL+"Barcodes.zip";
+//            try {
+//                HttpDownloadUtility.downloadFile(fileURL, downloadLocation.getText());
+//            } catch (IOException ex) {
+//                JOptionPane.showMessageDialog(null,ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+//            }
 
             downloadProgress.setVisible(true);
             downloadLabel.setVisible(true);
